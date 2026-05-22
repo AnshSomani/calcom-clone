@@ -160,12 +160,3 @@ SMTP_USER=your_address@gmail.com
 SMTP_PASS=your_app_password
 SMTP_FROM=Cal.com Clone <noreply@yourdomain.com>
 ```
-
----
-
-## 🔑 Design Decisions
-
-1. **Pure JavaScript/JSX Migration**: Next.js configurations, App Router files, components, and helper utilities have been migrated to pure JavaScript for simplified runtime flexibility and streamlined deployment cycles. Aliases are resolved seamlessly using `jsconfig.json`.
-2. **Tailwind CSS v4 Integration**: Replaced raw, fragmented CSS styles with a modern, high-performance Tailwind utility system. Implements custom interactive transitions, borders, gradients, and custom overlays inspired directly by Cal.com's modern design philosophy.
-3. **Database Robustness**: Designed using real-time connection pooling (`pg.Pool`), supporting live database failovers and secure SSL handshakes required for production environments (like Neon PostgreSQL).
-4. **No Auth Simulation**: To align with strict spec restrictions, a simulated admin host (`john`) is auto-loaded in the session scope. All management dashboards and bookings default to this user context.
