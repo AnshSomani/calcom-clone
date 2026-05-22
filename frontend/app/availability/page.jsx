@@ -8,7 +8,7 @@ import ConfirmDialog from '@/components/ConfirmDialog';
 const DEFAULT_SCHEDULES = () =>
   Array.from({ length: 7 }, (_, i) => ({ day_of_week: i, start_time: '09:00', end_time: '17:00', is_active: i >= 1 && i <= 5 }));
 
-const inputCls = 'w-full px-3 py-2 text-sm border border-slate-200 rounded-lg outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100 bg-white transition-colors';
+const inputCls = 'w-full px-3 py-2 text-sm border border-neutral-800 rounded-lg outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-950/40 bg-[#1d1d1d] text-white transition-colors';
 
 export default function AvailabilityPage() {
   const [availabilities, setAvailabilities] = useState([]);
@@ -56,7 +56,6 @@ export default function AvailabilityPage() {
   const handleSave = async () => {
     setSaving(true);
     const res = await availabilityApi.update({ timezone, name, schedules, overrides });
-    setSaving(true); // wait, let's keep setSaving(false) like original
     setSaving(false);
     if (res.success) { addToast('Availability saved!'); fetchAvailability(); }
     else addToast(res.error || 'Failed to save', 'error');
@@ -94,12 +93,12 @@ export default function AvailabilityPage() {
     <div className="p-8 max-w-5xl mx-auto fade-in">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Availability</h1>
-          <p className="text-slate-500 text-sm mt-1">Manage when people can book time with you</p>
+          <h1 className="text-2xl font-bold text-slate-100">Availability</h1>
+          <p className="text-neutral-400 text-sm mt-1">Manage when people can book time with you</p>
         </div>
         <div className="flex gap-3">
           <button onClick={() => setShowNewModal(true)}
-            className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors shadow-sm">
+            className="flex items-center gap-2 px-4 py-2.5 bg-[#181818] border border-neutral-800 text-slate-200 text-sm font-medium rounded-xl hover:bg-neutral-800 transition-colors shadow-sm">
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             New Schedule
           </button>
@@ -115,18 +114,18 @@ export default function AvailabilityPage() {
           {/* Schedule Selector */}
           {availabilities.length > 1 && (
             <div>
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Schedules</p>
+              <p className="text-xs font-bold text-neutral-500 uppercase tracking-wider mb-3">Schedules</p>
               {availabilities.map(av => (
                 <div key={av.id} onClick={() => selectAvailability(av)}
                   className={`p-3 rounded-xl cursor-pointer mb-2 border transition-all flex items-center justify-between
-                    ${selected?.id === av.id ? 'bg-violet-50 border-violet-200' : 'bg-white border-slate-200 hover:border-slate-300'}`}>
+                    ${selected?.id === av.id ? 'bg-neutral-800/80 border-neutral-700' : 'bg-[#181818] border-neutral-800/80 hover:border-neutral-700'}`}>
                   <div>
-                    <div className="text-sm font-semibold text-slate-800">{av.name}</div>
-                    {av.is_default === 1 && <span className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full mt-1 inline-block">Default</span>}
+                    <div className="text-sm font-semibold text-slate-200">{av.name}</div>
+                    {av.is_default === 1 && <span className="text-xs bg-[#242424] text-neutral-400 border border-neutral-800 px-2 py-0.5 rounded-full mt-1 inline-block">Default</span>}
                   </div>
                   {!av.is_default && (
                     <button onClick={e => { e.stopPropagation(); setDeleteConfirm(av); }}
-                      className="p-1 hover:bg-red-50 rounded-lg text-slate-400 hover:text-red-500 transition-colors">
+                      className="p-1 hover:bg-red-950/30 rounded-lg text-neutral-400 hover:text-red-400 transition-colors">
                       <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
                     </button>
                   )}
@@ -137,22 +136,22 @@ export default function AvailabilityPage() {
 
           <div className="space-y-5">
             {/* Weekly schedule card */}
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+            <div className="bg-[#181818] rounded-2xl border border-neutral-800/80 shadow-sm p-6">
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5">Schedule Name</label>
+                  <label className="block text-xs font-semibold text-neutral-400 uppercase tracking-wide mb-1.5">Schedule Name</label>
                   <input className={inputCls} value={name} onChange={e => setName(e.target.value)} />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5">Timezone</label>
+                  <label className="block text-xs font-semibold text-neutral-400 uppercase tracking-wide mb-1.5">Timezone</label>
                   <select className={inputCls} value={timezone} onChange={e => setTimezone(e.target.value)}>
-                    {TIMEZONES.map(tz => <option key={tz} value={tz}>{tz}</option>)}
+                    {TIMEZONES.map(tz => <option key={tz} value={tz} className="bg-[#1d1d1d] text-white">{tz}</option>)}
                   </select>
                 </div>
               </div>
-              <div className="border-t border-slate-100 pt-5">
-                <p className="text-sm font-semibold text-slate-800 mb-1">Weekly Hours</p>
-                <p className="text-xs text-slate-500 mb-4">Set your regular availability for each day</p>
+              <div className="border-t border-neutral-800/80 pt-5">
+                <p className="text-sm font-semibold text-slate-200 mb-1">Weekly Hours</p>
+                <p className="text-xs text-neutral-500 mb-4">Set your regular availability for each day</p>
                 <div className="space-y-2.5">
                   {schedules.map(s => (
                     <div key={s.day_of_week} className="flex items-center gap-4">
@@ -160,23 +159,23 @@ export default function AvailabilityPage() {
                         <input type="checkbox" checked={!!s.is_active} onChange={() => setSchedules(sc => sc.map(d => d.day_of_week === s.day_of_week ? { ...d, is_active: !d.is_active } : d))} />
                         <span className="toggle-slider" />
                       </label>
-                      <span className={`w-24 text-sm font-medium flex-shrink-0 ${s.is_active ? 'text-slate-800' : 'text-slate-400'}`}>
+                      <span className={`w-24 text-sm font-medium flex-shrink-0 ${s.is_active ? 'text-slate-200' : 'text-neutral-500'}`}>
                         {DAY_NAMES[s.day_of_week]}
                       </span>
                       {s.is_active ? (
                         <div className="flex items-center gap-2 flex-1">
-                          <select className="flex-1 px-3 py-1.5 text-sm border border-slate-200 rounded-lg outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100 bg-white"
+                          <select className="flex-1 px-3 py-1.5 text-sm border border-neutral-800 rounded-lg outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-950/40 bg-[#1d1d1d] text-white"
                             value={s.start_time} onChange={e => setSchedules(sc => sc.map(d => d.day_of_week === s.day_of_week ? { ...d, start_time: e.target.value } : d))}>
-                            {TIME_OPTIONS.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
+                            {TIME_OPTIONS.map(t => <option key={t.value} value={t.value} className="bg-[#1d1d1d] text-white">{t.label}</option>)}
                           </select>
-                          <span className="text-slate-400 text-sm">—</span>
-                          <select className="flex-1 px-3 py-1.5 text-sm border border-slate-200 rounded-lg outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100 bg-white"
+                          <span className="text-neutral-500 text-sm">—</span>
+                          <select className="flex-1 px-3 py-1.5 text-sm border border-neutral-800 rounded-lg outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-950/40 bg-[#1d1d1d] text-white"
                             value={s.end_time} onChange={e => setSchedules(sc => sc.map(d => d.day_of_week === s.day_of_week ? { ...d, end_time: e.target.value } : d))}>
-                            {TIME_OPTIONS.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
+                            {TIME_OPTIONS.map(t => <option key={t.value} value={t.value} className="bg-[#1d1d1d] text-white">{t.label}</option>)}
                           </select>
                         </div>
                       ) : (
-                        <span className="text-sm text-slate-400 italic">Unavailable</span>
+                        <span className="text-sm text-neutral-500 italic">Unavailable</span>
                       )}
                     </div>
                   ))}
@@ -185,73 +184,73 @@ export default function AvailabilityPage() {
             </div>
 
             {/* Date Overrides card */}
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+            <div className="bg-[#181818] rounded-2xl border border-neutral-800/80 shadow-sm p-6">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <p className="text-sm font-semibold text-slate-800">Date Overrides</p>
-                  <p className="text-xs text-slate-500 mt-0.5">Block specific dates or set custom hours</p>
+                  <p className="text-sm font-semibold text-slate-200">Date Overrides</p>
+                  <p className="text-xs text-neutral-500 mt-0.5">Block specific dates or set custom hours</p>
                 </div>
                 <button onClick={() => setShowAddOverride(true)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors">
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-[#242424] hover:bg-neutral-800 text-slate-200 rounded-lg border border-neutral-800 transition-colors">
                   <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                   Add Override
                 </button>
               </div>
 
               {showAddOverride && (
-                <div className="bg-slate-50 rounded-xl p-4 mb-4 space-y-3">
+                <div className="bg-[#242424] border border-neutral-800/60 rounded-xl p-4 mb-4 space-y-3">
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-xs font-medium text-slate-600 mb-1">Date</label>
+                      <label className="block text-xs font-medium text-neutral-400 mb-1">Date</label>
                       <input type="date" className={inputCls} min={today} value={newOverride.date} onChange={e => setNewOverride(o => ({ ...o, date: e.target.value }))} />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-slate-600 mb-1">Type</label>
+                      <label className="block text-xs font-medium text-neutral-400 mb-1">Type</label>
                       <select className={inputCls} value={newOverride.is_blocked ? 'blocked' : 'custom'} onChange={e => setNewOverride(o => ({ ...o, is_blocked: e.target.value === 'blocked' }))}>
-                        <option value="blocked">Block this day</option>
-                        <option value="custom">Custom hours</option>
+                        <option value="blocked" className="bg-[#1d1d1d] text-white">Block this day</option>
+                        <option value="custom" className="bg-[#1d1d1d] text-white">Custom hours</option>
                       </select>
                     </div>
                   </div>
                   {!newOverride.is_blocked && (
                     <div className="flex items-center gap-2">
                       <select className={`${inputCls} flex-1`} value={newOverride.start_time} onChange={e => setNewOverride(o => ({ ...o, start_time: e.target.value }))}>
-                        {TIME_OPTIONS.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
+                        {TIME_OPTIONS.map(t => <option key={t.value} value={t.value} className="bg-[#1d1d1d] text-white">{t.label}</option>)}
                       </select>
-                      <span className="text-slate-400 text-sm">—</span>
+                      <span className="text-neutral-500 text-sm">—</span>
                       <select className={`${inputCls} flex-1`} value={newOverride.end_time} onChange={e => setNewOverride(o => ({ ...o, end_time: e.target.value }))}>
-                        {TIME_OPTIONS.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
+                        {TIME_OPTIONS.map(t => <option key={t.value} value={t.value} className="bg-[#1d1d1d] text-white">{t.label}</option>)}
                       </select>
                     </div>
                   )}
                   <input className={inputCls} placeholder="Reason (optional)" value={newOverride.reason} onChange={e => setNewOverride(o => ({ ...o, reason: e.target.value }))} />
                   <div className="flex gap-2">
-                    <button onClick={() => setShowAddOverride(false)} className="px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-200 hover:bg-slate-300 rounded-lg transition-colors">Cancel</button>
-                    <button onClick={addOverride} className="px-3 py-1.5 text-xs font-medium text-white bg-violet-600 hover:bg-violet-700 rounded-lg transition-colors">Add Override</button>
+                    <button onClick={() => setShowAddOverride(false)} className="px-3 py-1.5 text-xs font-medium text-slate-300 bg-[#181818] hover:bg-neutral-800 rounded-lg border border-neutral-800 transition-colors">Cancel</button>
+                    <button onClick={addOverride} className="px-3 py-1.5 text-xs font-semibold text-white bg-violet-600 hover:bg-violet-700 rounded-lg transition-colors">Add Override</button>
                   </div>
                 </div>
               )}
 
               {overrides.length === 0 && !showAddOverride ? (
-                <p className="text-sm text-slate-400 text-center py-6">No date overrides yet.</p>
+                <p className="text-sm text-neutral-500 text-center py-6">No date overrides yet.</p>
               ) : (
                 <div className="space-y-2">
                   {overrides.map(ov => (
-                    <div key={ov.date} className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl">
+                    <div key={ov.date} className="flex items-center gap-3 p-3 bg-[#242424] border border-neutral-800/60 rounded-xl">
                       <div className="flex-1">
-                        <div className="text-sm font-medium text-slate-800">
+                        <div className="text-sm font-medium text-slate-200">
                           {new Date(ov.date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
                         </div>
-                        <div className="text-xs text-slate-500 mt-0.5">
+                        <div className="text-xs text-neutral-400 mt-0.5">
                           {ov.is_blocked ? '🚫 Blocked' : `⏰ ${ov.start_time} – ${ov.end_time}`}
                           {ov.reason && ` · ${ov.reason}`}
                         </div>
                       </div>
-                      <span className={`text-xs font-medium px-2 py-1 rounded-full ${ov.is_blocked ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600'}`}>
+                      <span className={`text-xs font-medium px-2 py-1 rounded-full border ${ov.is_blocked ? 'bg-red-950/30 text-red-400 border-red-900/30' : 'bg-blue-950/30 text-blue-400 border-blue-900/30'}`}>
                         {ov.is_blocked ? 'Blocked' : 'Custom'}
                       </span>
                       <button onClick={() => setOverrides(o => o.filter(x => x.date !== ov.date))}
-                        className="p-1.5 hover:bg-red-50 rounded-lg text-slate-400 hover:text-red-500 transition-colors">
+                        className="p-1.5 hover:bg-red-950/30 rounded-lg text-neutral-400 hover:text-red-400 transition-colors">
                         <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                       </button>
                     </div>
@@ -265,28 +264,28 @@ export default function AvailabilityPage() {
 
       {/* New Schedule Modal */}
       {showNewModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[9999] p-4"
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[9999] p-4"
           onClick={e => { if (e.target === e.currentTarget) setShowNewModal(false); }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm">
-            <div className="flex items-center justify-between p-6 border-b border-slate-100">
-              <h2 className="text-base font-semibold text-slate-900">New Availability Schedule</h2>
-              <button onClick={() => setShowNewModal(false)} className="p-1.5 hover:bg-slate-100 rounded-lg"><svg className="w-4 h-4 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+          <div className="bg-[#181818] border border-neutral-800/80 rounded-2xl shadow-2xl w-full max-w-sm text-slate-100 animate-in fade-in-up duration-200">
+            <div className="flex items-center justify-between p-6 border-b border-neutral-800/80">
+              <h2 className="text-base font-semibold text-slate-100">New Availability Schedule</h2>
+              <button onClick={() => setShowNewModal(false)} className="p-1.5 hover:bg-neutral-800 rounded-lg text-neutral-400 hover:text-white"><svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
             </div>
             <div className="p-6 space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wide mb-1.5">Name</label>
+                <label className="block text-xs font-semibold text-neutral-400 uppercase tracking-wide mb-1.5">Name</label>
                 <input className={inputCls} placeholder="e.g. Early Bird Hours" value={newName} onChange={e => setNewName(e.target.value)} />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wide mb-1.5">Timezone</label>
+                <label className="block text-xs font-semibold text-neutral-400 uppercase tracking-wide mb-1.5">Timezone</label>
                 <select className={inputCls} value={newTimezone} onChange={e => setNewTimezone(e.target.value)}>
-                  {TIMEZONES.map(tz => <option key={tz} value={tz}>{tz}</option>)}
+                  {TIMEZONES.map(tz => <option key={tz} value={tz} className="bg-[#1d1d1d] text-white">{tz}</option>)}
                 </select>
               </div>
             </div>
-            <div className="flex items-center justify-end gap-3 p-6 border-t border-slate-100">
-              <button onClick={() => setShowNewModal(false)} className="px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors">Cancel</button>
-              <button onClick={handleCreateSchedule} className="px-4 py-2 text-sm font-medium text-white bg-violet-600 hover:bg-violet-700 rounded-lg transition-colors">Create</button>
+            <div className="flex items-center justify-end gap-3 p-6 border-t border-neutral-800/80">
+              <button onClick={() => setShowNewModal(false)} className="px-4 py-2 text-sm font-medium text-slate-300 bg-[#242424] hover:bg-neutral-800 rounded-lg transition-colors">Cancel</button>
+              <button onClick={handleCreateSchedule} className="px-4 py-2 text-sm font-semibold text-white bg-violet-600 hover:bg-violet-700 rounded-lg transition-colors">Create</button>
             </div>
           </div>
         </div>

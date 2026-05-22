@@ -8,20 +8,20 @@ export default function ConfirmDialog({
 
   const confirmBtnClass =
     variant === 'danger'
-      ? 'px-4 py-2 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-lg transition-colors flex items-center gap-2 disabled:opacity-50'
-      : 'px-4 py-2 text-sm font-medium text-white bg-violet-600 hover:bg-violet-700 rounded-lg transition-colors flex items-center gap-2 disabled:opacity-50';
+      ? 'px-4 py-2 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors flex items-center gap-2 disabled:opacity-50'
+      : 'px-4 py-2 text-sm font-semibold text-white bg-violet-600 hover:bg-violet-700 rounded-lg transition-colors flex items-center gap-2 disabled:opacity-50';
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[9999] p-4"
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[9999] p-4"
       onClick={e => { if (e.target === e.currentTarget) onCancel(); }}
     >
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm">
+      <div className="bg-[#181818] border border-neutral-800/80 rounded-2xl shadow-2xl w-full max-w-sm">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-slate-100">
-          <h2 className="text-base font-semibold text-slate-900">{title}</h2>
+        <div className="flex items-center justify-between p-6 border-b border-neutral-800/80">
+          <h2 className="text-base font-bold text-slate-100">{title}</h2>
           <button
-            className="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+            className="p-1 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors"
             onClick={onCancel}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -32,14 +32,14 @@ export default function ConfirmDialog({
 
         {/* Body */}
         <div className="p-6">
-          <p className="text-slate-500 text-sm leading-relaxed">{description}</p>
+          <p className="text-neutral-400 text-sm leading-relaxed">{description}</p>
           {extraContent && <div className="mt-4">{extraContent}</div>}
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-end gap-3 p-6 border-t border-slate-100">
+        <div className="flex items-center justify-end gap-3 p-6 border-t border-neutral-800/80">
           <button
-            className="px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors disabled:opacity-50"
+            className="px-4 py-2 text-sm font-medium text-slate-300 bg-[#242424] hover:bg-neutral-800 rounded-lg transition-colors disabled:opacity-50"
             onClick={onCancel}
             disabled={loading}
           >

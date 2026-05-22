@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body className="bg-slate-50 text-slate-900 antialiased" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
+      <body className="bg-[#101010] text-[#f5f5f5] antialiased" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
         {children}
       </body>
     </html>

@@ -7,10 +7,10 @@ import { ToastContainer } from '@/components/Toast';
 import ConfirmDialog from '@/components/ConfirmDialog';
 
 const statusStyles = {
-  confirmed: 'bg-emerald-100 text-emerald-700',
-  cancelled: 'bg-red-100 text-red-600',
-  pending: 'bg-amber-100 text-amber-700',
-  rescheduled: 'bg-blue-100 text-blue-700',
+  confirmed: 'bg-emerald-950/30 text-emerald-400 border border-emerald-900/30',
+  cancelled: 'bg-red-950/30 text-red-400 border border-red-900/30',
+  pending: 'bg-amber-950/30 text-amber-400 border border-amber-900/30',
+  rescheduled: 'bg-blue-950/30 text-blue-400 border border-blue-900/30',
 };
 
 export default function BookingsPage() {
@@ -69,19 +69,19 @@ export default function BookingsPage() {
   return (
     <div className="p-8 max-w-4xl mx-auto fade-in">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-slate-900">Bookings</h1>
-        <p className="text-slate-500 text-sm mt-1">View and manage all your scheduled meetings</p>
+        <h1 className="text-2xl font-bold text-slate-100">Bookings</h1>
+        <p className="text-neutral-400 text-sm mt-1">View and manage all your scheduled meetings</p>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 border-b border-slate-200 mb-6">
+      <div className="flex gap-1 border-b border-neutral-800/80 mb-6">
         {tabs.map(tab => (
           <button key={tab.key} onClick={() => setActiveTab(tab.key)}
             className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium -mb-px border-b-2 transition-colors
-              ${activeTab === tab.key ? 'text-violet-600 border-violet-600' : 'text-slate-500 border-transparent hover:text-slate-700'}`}>
+              ${activeTab === tab.key ? 'text-violet-400 border-violet-400' : 'text-neutral-400 border-transparent hover:text-white'}`}>
             {tab.label}
-            <span className={`text-xs px-2 py-0.5 rounded-full font-semibold
-              ${activeTab === tab.key ? 'bg-violet-100 text-violet-700' : 'bg-slate-100 text-slate-500'}`}>
+            <span className={`text-xs px-2 py-0.5 rounded-full font-semibold border
+              ${activeTab === tab.key ? 'bg-violet-950/40 text-violet-300 border-violet-900/40' : 'bg-[#242424] text-neutral-400 border-neutral-800'}`}>
               {counts[tab.key]}
             </span>
           </button>
@@ -93,22 +93,22 @@ export default function BookingsPage() {
           {[1, 2, 3].map(i => <div key={i} className="skeleton h-24 rounded-xl" />)}
         </div>
       ) : bookings.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-24 text-center">
-          <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mb-4">
-            <svg className="w-8 h-8 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <div className="flex flex-col items-center justify-center py-24 text-center bg-[#181818] border border-neutral-800 rounded-2xl">
+          <div className="w-16 h-16 bg-[#242424] border border-neutral-800 rounded-2xl flex items-center justify-center mb-4">
+            <svg className="w-8 h-8 text-neutral-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
               <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
             </svg>
           </div>
-          <h3 className="font-semibold text-slate-800 text-lg mb-2">No {activeTab} bookings</h3>
-          <p className="text-slate-500 text-sm">
+          <h3 className="font-bold text-slate-200 text-lg mb-2">No {activeTab} bookings</h3>
+          <p className="text-neutral-400 text-sm">
             {activeTab === 'upcoming' ? 'Share your booking link to get meetings scheduled.' : `No ${activeTab} bookings to display.`}
           </p>
         </div>
       ) : (
         <div className="space-y-2.5">
           {bookings.map(b => (
-            <div key={b.id} className="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all flex items-center gap-4 p-4 fade-in-up">
+            <div key={b.id} className="bg-[#181818] rounded-xl border border-neutral-800/80 shadow-sm hover:shadow-md transition-all flex items-center gap-4 p-4 fade-in-up">
               {/* Color icon */}
               <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: b.color + '20' }}>
                 <svg className="w-5 h-5" style={{ color: b.color }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -118,35 +118,35 @@ export default function BookingsPage() {
 
               {/* Info */}
               <div className="flex-1 min-w-0">
-                <div className="font-semibold text-slate-900 text-sm">{b.booker_name}</div>
+                <div className="font-semibold text-slate-100 text-sm">{b.booker_name}</div>
                 <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                  <span className="text-xs font-medium" style={{ color: b.color }}>{b.event_type_title}</span>
-                  <span className="text-slate-300">·</span>
-                  <span className="text-xs text-slate-500">{b.booker_email}</span>
-                  <span className="text-slate-300">·</span>
-                  <span className="text-xs text-slate-500">{formatDuration(b.duration)}</span>
+                  <span className="text-xs font-semibold" style={{ color: b.color }}>{b.event_type_title}</span>
+                  <span className="text-neutral-600">·</span>
+                  <span className="text-xs text-neutral-400">{b.booker_email}</span>
+                  <span className="text-neutral-600">·</span>
+                  <span className="text-xs text-neutral-400">{formatDuration(b.duration)}</span>
                 </div>
-                {b.notes && <div className="text-xs text-slate-400 mt-1 italic truncate">"{b.notes}"</div>}
+                {b.notes && <div className="text-xs text-neutral-500 mt-1 italic truncate">"{b.notes}"</div>}
               </div>
 
               {/* Time + actions */}
               <div className="flex flex-col items-end gap-2 flex-shrink-0">
                 <div className="text-right">
-                  <div className="text-sm font-semibold text-slate-800">{formatDate(b.start_time)}</div>
-                  <div className="text-xs text-slate-500 mt-0.5">{formatTime(b.start_time)} – {formatTime(b.end_time)}</div>
+                  <div className="text-sm font-semibold text-slate-200">{formatDate(b.start_time)}</div>
+                  <div className="text-xs text-neutral-400 mt-0.5">{formatTime(b.start_time)} – {formatTime(b.end_time)}</div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className={`text-xs font-medium px-2.5 py-1 rounded-full capitalize ${statusStyles[b.status] || 'bg-slate-100 text-slate-500'}`}>
+                  <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize ${statusStyles[b.status] || 'bg-[#242424] text-neutral-400 border-neutral-800'}`}>
                     {b.status}
                   </span>
                   {activeTab === 'upcoming' && (
                     <>
                       <Link href={`/booking/${b.uid}/reschedule`}
-                        className="text-xs font-medium px-3 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors">
+                        className="text-xs font-medium px-3 py-1 bg-[#242424] hover:bg-neutral-800 text-slate-200 rounded-lg border border-neutral-800 transition-colors">
                         Reschedule
                       </Link>
                       <button onClick={() => setCancelTarget(b)}
-                        className="text-xs font-medium px-3 py-1 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+                        className="text-xs font-medium px-3 py-1 text-red-400 hover:bg-red-950/30 rounded-lg transition-colors">
                         Cancel
                       </button>
                     </>
@@ -168,8 +168,8 @@ export default function BookingsPage() {
         loading={cancelLoading}
         extraContent={
           <div className="mt-3">
-            <label className="block text-xs font-medium text-slate-600 mb-1.5">Reason (optional)</label>
-            <input className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+            <label className="block text-xs font-medium text-neutral-400 mb-1.5">Reason (optional)</label>
+            <input className="w-full px-3 py-2 text-sm border border-neutral-800 rounded-lg outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-950/40 bg-[#1d1d1d] text-white"
               placeholder="e.g. Scheduling conflict" value={cancelReason} onChange={e => setCancelReason(e.target.value)} />
           </div>
         }

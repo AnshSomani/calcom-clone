@@ -131,98 +131,99 @@ export default function BookingPage() {
   };
 
   if (loading) return (
-    <div className="min-h-screen bg-slate-50">
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-8 h-8 border-3 border-slate-200 border-t-slate-800 rounded-full animate-spin" />
-      </div>
+    <div className="min-h-screen bg-[#101010] flex items-center justify-center">
+      <div className="w-8 h-8 border-3 border-neutral-800 border-t-violet-500 rounded-full animate-spin" />
     </div>
   );
 
   if (error) return (
-    <div className="min-h-screen bg-slate-50">
-      <div className="text-center p-10">
+    <div className="min-h-screen bg-[#101010] flex items-center justify-center">
+      <div className="text-center p-10 bg-[#181818] border border-neutral-800/80 rounded-2xl max-w-sm mx-auto shadow-2xl">
         <div className="text-5xl mb-4">😕</div>
-        <h2 className="text-xl font-bold mb-2">Page not found</h2>
-        <p className="text-slate-500">{error}</p>
+        <h2 className="text-xl font-bold mb-2 text-slate-100">Page not found</h2>
+        <p className="text-neutral-400 text-sm">{error}</p>
       </div>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <div className="max-w-4xl mx-auto px-4 py-12">
+    <div className="min-h-screen bg-[#101010] py-12 px-4 relative overflow-hidden flex items-center justify-center">
+      {/* Background radial glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-violet-600/5 rounded-full blur-[140px] pointer-events-none -z-10" />
+
+      <div className="max-w-4xl w-full mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6">
           {/* Left sidebar */}
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 h-fit">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 text-white text-2xl font-bold flex items-center justify-center mb-4">
+          <div className="bg-[#181818] rounded-2xl border border-neutral-800/80 p-8 h-fit shadow-md text-slate-200">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 text-white text-2xl font-bold flex items-center justify-center mb-4 shadow-lg shadow-violet-500/10">
               {user?.name?.[0] || 'J'}
             </div>
-            <div className="text-sm text-slate-500 font-medium mb-1">{user?.name}</div>
-            <h1 className="text-2xl font-bold text-slate-900 mb-6" style={{ color: eventType?.color }}>{eventType?.title}</h1>
+            <div className="text-sm text-neutral-400 font-medium mb-1">{user?.name}</div>
+            <h1 className="text-2xl font-bold text-slate-100 mb-6" style={{ color: eventType?.color }}>{eventType?.title}</h1>
 
-            <div className="flex items-center gap-2 text-sm text-slate-600 mb-3">
+            <div className="flex items-center gap-2 text-sm text-neutral-400 mb-3">
               <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               {formatDuration(eventType?.duration || 0)}
             </div>
-            <div className="flex items-center gap-2 text-sm text-slate-600 mb-3">
+            <div className="flex items-center gap-2 text-sm text-neutral-400 mb-3">
               <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
               {eventType?.location}
             </div>
             {(eventType?.buffer_before || 0) > 0 && (
-              <div className="flex items-center gap-2 text-sm text-slate-600 mb-3">
+              <div className="flex items-center gap-2 text-sm text-neutral-400 mb-3">
                 <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
                 {eventType?.buffer_before}min buffer before
               </div>
             )}
             {(eventType?.buffer_after || 0) > 0 && (
-              <div className="flex items-center gap-2 text-sm text-slate-600 mb-3">
+              <div className="flex items-center gap-2 text-sm text-neutral-400 mb-3">
                 <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
                 {eventType?.buffer_after}min buffer after
               </div>
             )}
 
             {eventType?.description && (
-              <p className="text-[13px] text-slate-500 mt-4 leading-relaxed">
+              <p className="text-[13px] text-neutral-400 mt-4 leading-relaxed">
                 {eventType.description}
               </p>
             )}
 
             {/* Selected info */}
             {selectedDate && (
-              <div className="mt-6 p-4 bg-violet-50 rounded-xl border border-violet-100">
-                <div className="text-xs text-slate-500 mb-1">Selected</div>
-                <div className="text-[13px] font-semibold text-slate-900">{formatDate(selectedDate + 'T12:00:00')}</div>
+              <div className="mt-6 p-4 bg-[#242424] rounded-xl border border-neutral-800/80">
+                <div className="text-xs text-neutral-400 mb-1">Selected Date</div>
+                <div className="text-[13px] font-semibold text-slate-200">{formatDate(selectedDate + 'T12:00:00')}</div>
                 {selectedSlot && (
-                  <div className="text-[13px] text-slate-500 mt-0.5">{selectedSlot.startTime} – {selectedSlot.endTime}</div>
+                  <div className="text-[13px] text-neutral-400 mt-0.5">{selectedSlot.startTime} – {selectedSlot.endTime}</div>
                 )}
               </div>
             )}
           </div>
 
           {/* Main content */}
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
+          <div className="bg-[#181818] rounded-2xl border border-neutral-800/80 p-8 shadow-md text-slate-200">
             {step === 'calendar' && (
               <div className="animate-in fade-in duration-200">
                 {!selectedDate ? (
                   <>
-                    <h2 className="text-lg font-bold text-slate-900 mb-6">Select a Date</h2>
+                    <h2 className="text-lg font-bold text-slate-100 mb-6">Select a Date</h2>
                     {/* Month navigator */}
                     <div className="flex items-center justify-between mb-6">
                       <button
-                        className="p-2 hover:bg-slate-100 rounded-lg transition-colors disabled:opacity-40"
+                        className="p-2 hover:bg-neutral-800 text-neutral-400 hover:text-white rounded-lg transition-colors disabled:opacity-40"
                         onClick={prevMonth}
                         disabled={viewDate <= new Date(today.getFullYear(), today.getMonth(), 1)}
                       >
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg>
                       </button>
-                      <span className="text-lg font-bold text-slate-900">{MONTHS[viewDate.getMonth()]} {viewDate.getFullYear()}</span>
-                      <button className="p-2 hover:bg-slate-100 rounded-lg transition-colors" onClick={nextMonth}>
+                      <span className="text-lg font-bold text-slate-100">{MONTHS[viewDate.getMonth()]} {viewDate.getFullYear()}</span>
+                      <button className="p-2 hover:bg-neutral-800 text-neutral-400 hover:text-white rounded-lg transition-colors" onClick={nextMonth}>
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
                       </button>
                     </div>
                     <div className="grid grid-cols-7 gap-1">
                       {DAY_NAMES_SHORT.map(d => (
-                        <div key={d} className="text-xs font-semibold text-slate-400 text-center py-2 uppercase">{d}</div>
+                        <div key={d} className="text-xs font-semibold text-neutral-500 text-center py-2 uppercase">{d}</div>
                       ))}
                       {calendarDays().map((day, i) => {
                         if (!day) return <div key={`empty-${i}`} />;
@@ -232,7 +233,7 @@ export default function BookingPage() {
                         const isToday = dateStr === today.toISOString().split('T')[0];
                         if (past) {
                           return (
-                            <div key={day} className="w-10 h-10 rounded-xl text-sm text-slate-300 flex items-center justify-center mx-auto cursor-not-allowed opacity-30">
+                            <div key={day} className="w-10 h-10 rounded-xl text-sm text-neutral-700 flex items-center justify-center mx-auto cursor-not-allowed opacity-30">
                               {day}
                             </div>
                           );
@@ -241,7 +242,7 @@ export default function BookingPage() {
                           return (
                             <div
                               key={day}
-                              className={`w-10 h-10 rounded-xl cursor-pointer text-sm font-semibold text-violet-700 bg-violet-50 hover:bg-violet-600 hover:text-white transition-colors flex items-center justify-center mx-auto${isToday ? ' ring-2 ring-violet-400' : ''}`}
+                              className={`w-10 h-10 rounded-xl cursor-pointer text-sm font-semibold text-violet-400 bg-violet-950/20 border border-violet-900/30 hover:bg-violet-600 hover:text-white hover:border-transparent transition-colors flex items-center justify-center mx-auto${isToday ? ' ring-2 ring-violet-400' : ''}`}
                               onClick={() => setSelectedDate(dateStr)}
                             >
                               {day}
@@ -249,36 +250,36 @@ export default function BookingPage() {
                           );
                         }
                         return (
-                          <div key={day} className="w-10 h-10 rounded-xl text-sm text-slate-300 flex items-center justify-center mx-auto cursor-not-allowed">
+                          <div key={day} className="w-10 h-10 rounded-xl text-sm text-neutral-600 flex items-center justify-center mx-auto cursor-not-allowed">
                             {day}
                           </div>
                         );
                       })}
                     </div>
-                    {datesLoading && <p className="text-center text-slate-400 text-[13px] mt-3">Loading availability…</p>}
+                    {datesLoading && <p className="text-center text-neutral-500 text-[13px] mt-3">Loading availability…</p>}
                   </>
                 ) : (
                   <>
                     <div className="flex items-center gap-3 mb-5">
                       <button
-                        className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+                        className="p-2 hover:bg-neutral-800 text-neutral-400 hover:text-white rounded-lg transition-colors"
                         onClick={() => { setSelectedDate(null); setSelectedSlot(null); }}
                       >
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg>
                       </button>
-                      <h2 className="text-lg font-bold text-slate-900">
+                      <h2 className="text-lg font-bold text-slate-100">
                         {new Date(selectedDate + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
                       </h2>
                     </div>
                     {slotsLoading ? (
                       <div className="flex flex-col gap-2">
-                        {[1,2,3,4].map(i => <div key={i} className="h-12 rounded-lg bg-slate-100 animate-pulse" />)}
+                        {[1,2,3,4].map(i => <div key={i} className="skeleton h-12 rounded-xl" />)}
                       </div>
                     ) : slots.length === 0 ? (
                       <div className="py-8 text-center">
-                        <p className="text-slate-400 text-sm">No available slots on this date.</p>
+                        <p className="text-neutral-500 text-sm">No available slots on this date.</p>
                         <button
-                          className="mt-3 px-4 py-2 text-sm font-semibold border-2 border-slate-200 rounded-xl text-slate-600 hover:border-violet-300 transition-colors"
+                          className="mt-3 px-4 py-2 text-sm font-semibold bg-[#242424] border border-neutral-800 hover:bg-neutral-800 rounded-xl text-slate-200 transition-colors"
                           onClick={() => setSelectedDate(null)}
                         >
                           Choose another day
@@ -289,10 +290,10 @@ export default function BookingPage() {
                         {slots.map(slot => (
                           <button
                             key={slot.start}
-                            className={`w-full py-3 rounded-xl text-sm font-semibold border-2 transition-all flex items-center justify-between px-4${
+                            className={`w-full py-3 rounded-xl text-sm font-semibold border-2 transition-all flex items-center justify-between px-4 ${
                               selectedSlot?.start === slot.start
-                                ? ' border-violet-600 bg-violet-600 text-white'
-                                : ' border-violet-200 text-violet-700 hover:border-violet-600 hover:bg-violet-600 hover:text-white'
+                                ? 'border-violet-600 bg-violet-600 text-white'
+                                : 'border-violet-900/30 bg-[#1d1d1d] text-violet-400 hover:border-violet-600 hover:bg-violet-600 hover:text-white'
                             }`}
                             onClick={() => {
                               setSelectedSlot(slot);
@@ -316,24 +317,24 @@ export default function BookingPage() {
               <div className="animate-in fade-in duration-200">
                 <div className="flex items-center gap-3 mb-5">
                   <button
-                    className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+                    className="p-2 hover:bg-neutral-800 text-neutral-400 hover:text-white rounded-lg transition-colors"
                     onClick={() => setStep('calendar')}
                   >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg>
                   </button>
-                  <h2 className="text-lg font-bold text-slate-900">Enter Details</h2>
+                  <h2 className="text-lg font-bold text-slate-100">Enter Details</h2>
                 </div>
 
                 {formErrors.submit && (
-                  <div className="bg-red-50 text-red-600 px-3 py-2.5 rounded-xl mb-4 text-[13px]">
+                  <div className="bg-red-950/20 text-red-400 border border-red-900/30 px-3 py-2.5 rounded-xl mb-4 text-[13px]">
                     {formErrors.submit}
                   </div>
                 )}
 
                 <div className="mb-4">
-                  <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wide mb-1.5">Your Name *</label>
+                  <label className="block text-xs font-semibold text-neutral-400 uppercase tracking-wide mb-1.5">Your Name *</label>
                   <input
-                    className={`w-full px-4 py-3 text-sm border rounded-xl outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100 bg-white transition-colors${formErrors.name ? ' border-red-400' : ' border-slate-200'}`}
+                    className={`w-full px-4 py-3 text-sm border rounded-xl outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-950/40 bg-[#1d1d1d] text-white transition-colors ${formErrors.name ? 'border-red-500' : 'border-neutral-800'}`}
                     placeholder="John Smith"
                     value={form.name}
                     onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
@@ -341,10 +342,10 @@ export default function BookingPage() {
                   {formErrors.name && <span className="text-xs text-red-500 mt-1 block">{formErrors.name}</span>}
                 </div>
                 <div className="mb-4">
-                  <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wide mb-1.5">Email Address *</label>
+                  <label className="block text-xs font-semibold text-neutral-400 uppercase tracking-wide mb-1.5">Email Address *</label>
                   <input
                     type="email"
-                    className={`w-full px-4 py-3 text-sm border rounded-xl outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100 bg-white transition-colors${formErrors.email ? ' border-red-400' : ' border-slate-200'}`}
+                    className={`w-full px-4 py-3 text-sm border rounded-xl outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-950/40 bg-[#1d1d1d] text-white transition-colors ${formErrors.email ? 'border-red-500' : 'border-neutral-800'}`}
                     placeholder="you@example.com"
                     value={form.email}
                     onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
@@ -355,10 +356,10 @@ export default function BookingPage() {
                 {/* Custom questions */}
                 {questions.map(q => (
                   <div key={q.id} className="mb-4">
-                    <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wide mb-1.5">{q.label}{q.is_required ? ' *' : ''}</label>
+                    <label className="block text-xs font-semibold text-neutral-400 uppercase tracking-wide mb-1.5">{q.label}{q.is_required ? ' *' : ''}</label>
                     {q.type === 'textarea' ? (
                       <textarea
-                        className={`w-full px-4 py-3 text-sm border rounded-xl outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100 bg-white transition-colors resize-none min-h-[80px]${formErrors[`q_${q.id}`] ? ' border-red-400' : ' border-slate-200'}`}
+                        className={`w-full px-4 py-3 text-sm border rounded-xl outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-950/40 bg-[#1d1d1d] text-white transition-colors resize-none min-h-[80px] ${formErrors[`q_${q.id}`] ? 'border-red-500' : 'border-neutral-800'}`}
                         placeholder={q.placeholder || ''}
                         value={customAnswers[q.id] || ''}
                         onChange={e => setCustomAnswers(a => ({ ...a, [q.id]: e.target.value }))}
@@ -371,19 +372,19 @@ export default function BookingPage() {
                           onChange={e => setCustomAnswers(a => ({ ...a, [q.id]: e.target.checked ? 'true' : 'false' }))}
                           className="w-4 h-4 accent-violet-600"
                         />
-                        <span className="text-[13px] text-slate-700">{q.placeholder || 'Yes'}</span>
+                        <span className="text-[13px] text-neutral-400">{q.placeholder || 'Yes'}</span>
                       </label>
                     ) : q.type === 'phone' ? (
                       <input
                         type="tel"
-                        className={`w-full px-4 py-3 text-sm border rounded-xl outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100 bg-white transition-colors${formErrors[`q_${q.id}`] ? ' border-red-400' : ' border-slate-200'}`}
+                        className={`w-full px-4 py-3 text-sm border rounded-xl outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-950/40 bg-[#1d1d1d] text-white transition-colors ${formErrors[`q_${q.id}`] ? 'border-red-500' : 'border-neutral-800'}`}
                         placeholder={q.placeholder || '+1 (555) 000-0000'}
                         value={customAnswers[q.id] || ''}
                         onChange={e => setCustomAnswers(a => ({ ...a, [q.id]: e.target.value }))}
                       />
                     ) : (
                       <input
-                        className={`w-full px-4 py-3 text-sm border rounded-xl outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100 bg-white transition-colors${formErrors[`q_${q.id}`] ? ' border-red-400' : ' border-slate-200'}`}
+                        className={`w-full px-4 py-3 text-sm border rounded-xl outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-950/40 bg-[#1d1d1d] text-white transition-colors ${formErrors[`q_${q.id}`] ? 'border-red-500' : 'border-neutral-800'}`}
                         placeholder={q.placeholder || ''}
                         value={customAnswers[q.id] || ''}
                         onChange={e => setCustomAnswers(a => ({ ...a, [q.id]: e.target.value }))}
@@ -394,11 +395,11 @@ export default function BookingPage() {
                 ))}
 
                 <div className="mb-5">
-                  <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wide mb-1.5">
-                    Additional Notes <span className="text-slate-400 font-normal normal-case">(optional)</span>
+                  <label className="block text-xs font-semibold text-neutral-400 uppercase tracking-wide mb-1.5">
+                    Additional Notes <span className="text-neutral-500 font-normal normal-case">(optional)</span>
                   </label>
                   <textarea
-                    className="w-full px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100 bg-white transition-colors resize-none min-h-[80px]"
+                    className="w-full px-4 py-3 text-sm border border-neutral-800 rounded-xl outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-950/40 bg-[#1d1d1d] text-white transition-colors resize-none min-h-[80px]"
                     placeholder="Anything you'd like me to know before our meeting..."
                     value={form.notes}
                     onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
@@ -406,7 +407,7 @@ export default function BookingPage() {
                 </div>
 
                 <button
-                  className="w-full py-3.5 bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-xl transition-colors text-base disabled:opacity-60 flex items-center justify-center"
+                  className="w-full py-3.5 bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-xl transition-colors text-base disabled:opacity-60 flex items-center justify-center shadow-lg shadow-violet-600/20"
                   onClick={handleSubmit}
                   disabled={submitting}
                 >
@@ -414,7 +415,7 @@ export default function BookingPage() {
                     <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   ) : 'Confirm Booking'}
                 </button>
-                <p className="text-[11.5px] text-slate-400 text-center mt-3">
+                <p className="text-[11.5px] text-neutral-500 text-center mt-3">
                   A confirmation email will be sent to {form.email || 'your email'}
                 </p>
               </div>

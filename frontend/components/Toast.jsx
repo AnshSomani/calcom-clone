@@ -45,7 +45,7 @@ export function ToastItem({ toast, onRemove }) {
 
   return (
     <div
-      className={`flex items-center gap-2.5 px-4 py-3 rounded-xl bg-slate-900 text-white text-sm shadow-xl border cursor-pointer max-w-sm animate-[fadeInUp_0.25s_ease] ${toastStyles[toast.type]}`}
+      className={`flex items-center gap-2.5 px-4 py-3 rounded-xl bg-[#181818] text-white text-sm shadow-xl border border-neutral-800/80 cursor-pointer max-w-sm animate-[fadeInUp_0.25s_ease] ${toastStyles[toast.type]}`}
       onClick={() => onRemove(toast.id)}
     >
       <ToastIcon type={toast.type} />
