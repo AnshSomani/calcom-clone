@@ -27,8 +27,8 @@ export default function BookingConfirmPage() {
 
   const handleCancel = async () => {
     setCancelling(true);
-    // Find booking by uid in bookings api — use public cancel route
-    const res = await fetch(`http://localhost:3001/api/public/booking/${uid}/cancel`, { method: 'POST' });
+    const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+    const res = await fetch(`${apiBase}/public/booking/${uid}/cancel`, { method: 'POST' });
     const json = await res.json();
     setCancelling(false);
     if (json.success || res.ok) setCancelled(true);

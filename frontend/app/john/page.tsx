@@ -9,7 +9,8 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/event-types')
+    const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+    fetch(`${apiBase}/event-types`)
       .then(r => r.json())
       .then(data => {
         if (data.success) {
