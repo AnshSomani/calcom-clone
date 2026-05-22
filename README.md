@@ -4,19 +4,21 @@ A fully functional scheduling/booking web application that replicates Cal.com's 
 
 ---
 
-## 🚀 Tech Stack
+## Tech Stack:
 
-| Layer | Technology | Status / Details |
-|---|---|---|
-| **Frontend** | **Next.js 16** (App Router) | Migrated to **pure JavaScript/JSX** (Zero TypeScript) |
-| **Styling** | **Tailwind CSS v4** | Modern utility-first design system with micro-animations & sleek dark modes |
-| **Backend** | **Node.js + Express.js** | Lightweight REST API (pure CommonJS JavaScript) |
-| **Database** | **PostgreSQL** via `pg` | Connected via connection pool. Supports cloud providers with SSL (Neon/Railway) and local environments. |
-| **Email** | **Nodemailer** | Event notifications (Ethereal test accounts by default, real SMTP configurable) |
+| Layer | Technology |
+|---|---|
+| **Frontend** | **Next.js 16** (App Router) |
+| **Styling** | **Tailwind CSS v4** |
+| **Backend** | **Node.js + Express.js** |
+| **Database** | **PostgreSQL** via `pg` |
+| **Email** | **Nodemailer** |
 
 ---
+## Pages:
+---
 
-## ✅ Features Implemented
+## Features Implemented
 
 ### Core Features
 - **Event Types Management** — Create, edit, delete, and toggle event types with title, description, duration, color, and URL slug.
@@ -36,7 +38,7 @@ A fully functional scheduling/booking web application that replicates Cal.com's 
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 website_copy_assignment/
@@ -77,7 +79,7 @@ website_copy_assignment/
 
 ---
 
-## 🗄️ Database Schema
+## Database Schema
 
 The relational database is constructed in PostgreSQL for performance and integrity. All SQL statements utilize parameterized queries to defend against SQL injections.
 
@@ -93,7 +95,7 @@ bookings                 — Scheduled slots (status, answer payloads, reschedul
 
 ---
 
-## 🛠️ Setup Instructions
+## Setup Instructions
 
 ### Prerequisites
 - Node.js v20+
@@ -134,7 +136,7 @@ The client interface runs at **http://localhost:3000**.
 
 ---
 
-## 🔗 Key URLs
+## Key URLs
 
 | URL | Description |
 |---|---|
@@ -147,7 +149,7 @@ The client interface runs at **http://localhost:3000**.
 
 ---
 
-## 📧 Email Configuration
+## Email Configuration
 
 By default, the backend utilizes **Ethereal Email** (a test SMTP service). Real-time test-email sandbox links are printed to the backend terminal logs upon actions.
 
