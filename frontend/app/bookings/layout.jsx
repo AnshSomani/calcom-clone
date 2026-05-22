@@ -1,12 +1,5 @@
-import Sidebar from '@/components/Sidebar';
+import DashboardLayout from '@/components/DashboardLayout';
 
 export default function AdminLayout({ children }) {
-  return (
-    <div className="flex min-h-screen bg-[#101010]">
-      <Sidebar />
-      <main className="flex-1 ml-60 min-h-screen overflow-y-auto">
-        {children}
-      </main>
-    </div>
-  );
+  return <DashboardLayout>{children}</DashboardLayout>;
 }

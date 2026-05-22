@@ -67,17 +67,17 @@ export default function BookingsPage() {
   ];
 
   return (
-    <div className="p-8 max-w-4xl mx-auto fade-in">
+    <div className="p-4 sm:p-8 max-w-4xl mx-auto fade-in">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-slate-100">Bookings</h1>
         <p className="text-neutral-400 text-sm mt-1">View and manage all your scheduled meetings</p>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 border-b border-neutral-800/80 mb-6">
+      <div className="flex gap-1 border-b border-neutral-800/80 mb-6 overflow-x-auto scrollbar-none whitespace-nowrap">
         {tabs.map(tab => (
           <button key={tab.key} onClick={() => setActiveTab(tab.key)}
-            className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium -mb-px border-b-2 transition-colors
+            className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium -mb-px border-b-2 transition-colors flex-shrink-0
               ${activeTab === tab.key ? 'text-violet-400 border-violet-400' : 'text-neutral-400 border-transparent hover:text-white'}`}>
             {tab.label}
             <span className={`text-xs px-2 py-0.5 rounded-full font-semibold border
@@ -93,7 +93,7 @@ export default function BookingsPage() {
           {[1, 2, 3].map(i => <div key={i} className="skeleton h-24 rounded-xl" />)}
         </div>
       ) : bookings.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-24 text-center bg-[#181818] border border-neutral-800 rounded-2xl">
+        <div className="flex flex-col items-center justify-center py-24 px-4 text-center bg-[#181818] border border-neutral-800 rounded-2xl">
           <div className="w-16 h-16 bg-[#242424] border border-neutral-800 rounded-2xl flex items-center justify-center mb-4">
             <svg className="w-8 h-8 text-neutral-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
@@ -106,50 +106,61 @@ export default function BookingsPage() {
           </p>
         </div>
       ) : (
-        <div className="space-y-2.5">
+        <div className="space-y-3">
           {bookings.map(b => (
-            <div key={b.id} className="bg-[#181818] rounded-xl border border-neutral-800/80 shadow-sm hover:shadow-md transition-all flex items-center gap-4 p-4 fade-in-up">
-              {/* Color icon */}
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: b.color + '20' }}>
-                <svg className="w-5 h-5" style={{ color: b.color }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
-                </svg>
+            <div key={b.id} className="bg-[#181818] rounded-xl border border-neutral-800/80 shadow-sm hover:shadow-md transition-all flex flex-col md:flex-row items-start md:items-center gap-4 p-4 fade-in-up">
+              {/* Left Side: Color Icon + Booker details */}
+              <div className="flex items-start gap-3 w-full min-w-0">
+                {/* Color icon */}
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 md:mt-0" style={{ background: b.color + '20' }}>
+                  <svg className="w-5 h-5" style={{ color: b.color }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                  </svg>
+                </div>
+
+                {/* Info */}
+                <div className="flex-1 min-w-0">
+                  <div className="font-semibold text-slate-100 text-sm truncate">{b.booker_name}</div>
+                  <div className="flex items-center gap-x-2 gap-y-1 mt-1 flex-wrap">
+                    <span className="text-xs font-semibold px-2 py-0.5 rounded-full border" style={{ color: b.color, borderColor: b.color + '30', background: b.color + '10' }}>{b.event_type_title}</span>
+                    <span className="text-xs text-neutral-400 truncate max-w-[150px] sm:max-w-xs">{b.booker_email}</span>
+                    <span className="text-neutral-600 hidden sm:inline">·</span>
+                    <span className="text-xs text-neutral-400">{formatDuration(b.duration)}</span>
+                  </div>
+                  {b.notes && (
+                    <div className="text-xs text-neutral-500 mt-2 italic bg-neutral-900/40 p-2.5 rounded-lg border border-neutral-800/60 max-w-xl break-words">
+                      "{b.notes}"
+                    </div>
+                  )}
+                </div>
               </div>
 
-              {/* Info */}
-              <div className="flex-1 min-w-0">
-                <div className="font-semibold text-slate-100 text-sm">{b.booker_name}</div>
-                <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                  <span className="text-xs font-semibold" style={{ color: b.color }}>{b.event_type_title}</span>
-                  <span className="text-neutral-600">·</span>
-                  <span className="text-xs text-neutral-400">{b.booker_email}</span>
-                  <span className="text-neutral-600">·</span>
-                  <span className="text-xs text-neutral-400">{formatDuration(b.duration)}</span>
+              {/* Right Side: Time + actions */}
+              <div className="flex flex-col md:items-end gap-3 border-t border-neutral-800/60 pt-3 md:border-0 md:pt-0 flex-shrink-0 w-full md:w-auto">
+                <div className="md:text-right flex flex-row md:flex-col justify-between items-center md:items-end w-full gap-4">
+                  <div>
+                    <div className="text-sm font-semibold text-slate-200">{formatDate(b.start_time)}</div>
+                    <div className="text-xs text-neutral-400 mt-0.5">{formatTime(b.start_time)} – {formatTime(b.end_time)}</div>
+                  </div>
+                  <span className={`md:hidden text-xs font-semibold px-2.5 py-1 rounded-full border capitalize ${statusStyles[b.status] || 'bg-[#242424] text-neutral-400 border-neutral-800'}`}>
+                    {b.status}
+                  </span>
                 </div>
-                {b.notes && <div className="text-xs text-neutral-500 mt-1 italic truncate">"{b.notes}"</div>}
-              </div>
-
-              {/* Time + actions */}
-              <div className="flex flex-col items-end gap-2 flex-shrink-0">
-                <div className="text-right">
-                  <div className="text-sm font-semibold text-slate-200">{formatDate(b.start_time)}</div>
-                  <div className="text-xs text-neutral-400 mt-0.5">{formatTime(b.start_time)} – {formatTime(b.end_time)}</div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize ${statusStyles[b.status] || 'bg-[#242424] text-neutral-400 border-neutral-800'}`}>
+                <div className="flex items-center gap-2 justify-end w-full md:w-auto">
+                  <span className={`hidden md:inline-block text-xs font-semibold px-2.5 py-1 rounded-full border capitalize ${statusStyles[b.status] || 'bg-[#242424] text-neutral-400 border-neutral-800'}`}>
                     {b.status}
                   </span>
                   {activeTab === 'upcoming' && (
-                    <>
+                    <div className="flex items-center gap-2 w-full md:w-auto">
                       <Link href={`/booking/${b.uid}/reschedule`}
-                        className="text-xs font-medium px-3 py-1 bg-[#242424] hover:bg-neutral-800 text-slate-200 rounded-lg border border-neutral-800 transition-colors">
+                        className="flex-1 md:flex-none text-center text-xs font-medium px-3 py-1.5 bg-[#242424] hover:bg-neutral-800 text-slate-200 rounded-lg border border-neutral-800 transition-colors">
                         Reschedule
                       </Link>
                       <button onClick={() => setCancelTarget(b)}
-                        className="text-xs font-medium px-3 py-1 text-red-400 hover:bg-red-950/30 rounded-lg transition-colors">
+                        className="flex-1 md:flex-none text-center text-xs font-medium px-3 py-1.5 text-red-400 hover:bg-red-950/30 rounded-lg transition-colors border border-red-900/20 md:border-0">
                         Cancel
                       </button>
-                    </>
+                    </div>
                   )}
                 </div>
               </div>

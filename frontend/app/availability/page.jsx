@@ -90,54 +90,57 @@ export default function AvailabilityPage() {
   const today = new Date().toISOString().split('T')[0];
 
   return (
-    <div className="p-8 max-w-5xl mx-auto fade-in">
-      <div className="flex items-center justify-between mb-8">
+    <div className="p-4 sm:p-8 max-w-5xl mx-auto fade-in">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
           <h1 className="text-2xl font-bold text-slate-100">Availability</h1>
           <p className="text-neutral-400 text-sm mt-1">Manage when people can book time with you</p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex gap-3 w-full sm:w-auto">
           <button onClick={() => setShowNewModal(true)}
-            className="flex items-center gap-2 px-4 py-2.5 bg-[#181818] border border-neutral-800 text-slate-200 text-sm font-medium rounded-xl hover:bg-neutral-800 transition-colors shadow-sm">
+            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 bg-[#181818] border border-neutral-800 text-slate-200 text-sm font-medium rounded-xl hover:bg-neutral-800 transition-colors shadow-sm">
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             New Schedule
           </button>
           <button onClick={handleSave} disabled={saving}
-            className="flex items-center gap-2 px-5 py-2.5 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold rounded-xl transition-colors shadow-sm disabled:opacity-60">
+            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold rounded-xl transition-colors shadow-sm disabled:opacity-60">
             {saving ? <span className="spinner" /> : 'Save Changes'}
           </button>
         </div>
       </div>
 
       {loading ? <div className="skeleton h-96 rounded-2xl" /> : (
-        <div className={`grid gap-6 ${availabilities.length > 1 ? 'grid-cols-[220px_1fr]' : 'grid-cols-1'}`}>
+        <div className={`grid gap-6 ${availabilities.length > 1 ? 'grid-cols-1 md:grid-cols-[220px_1fr]' : 'grid-cols-1'}`}>
           {/* Schedule Selector */}
           {availabilities.length > 1 && (
             <div>
               <p className="text-xs font-bold text-neutral-500 uppercase tracking-wider mb-3">Schedules</p>
-              {availabilities.map(av => (
-                <div key={av.id} onClick={() => selectAvailability(av)}
-                  className={`p-3 rounded-xl cursor-pointer mb-2 border transition-all flex items-center justify-between
-                    ${selected?.id === av.id ? 'bg-neutral-800/80 border-neutral-700' : 'bg-[#181818] border-neutral-800/80 hover:border-neutral-700'}`}>
-                  <div>
-                    <div className="text-sm font-semibold text-slate-200">{av.name}</div>
-                    {av.is_default === 1 && <span className="text-xs bg-[#242424] text-neutral-400 border border-neutral-800 px-2 py-0.5 rounded-full mt-1 inline-block">Default</span>}
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-2 mb-4 md:mb-0">
+                {availabilities.map(av => (
+                  <div key={av.id} onClick={() => selectAvailability(av)}
+                    className={`p-3 rounded-xl cursor-pointer border transition-all flex items-center justify-between
+                      ${selected?.id === av.id ? 'bg-neutral-800/80 border-neutral-700' : 'bg-[#181818] border-neutral-800/80 hover:border-neutral-700'}`}>
+                    <div>
+                      <div className="text-sm font-semibold text-slate-200">{av.name}</div>
+                      {av.is_default === 1 && <span className="text-xs bg-[#242424] text-neutral-400 border border-neutral-800 px-2 py-0.5 rounded-full mt-1 inline-block">Default</span>}
+                    </div>
+                    {!av.is_default && (
+                      <button onClick={e => { e.stopPropagation(); setDeleteConfirm(av); }}
+                        className="p-1 hover:bg-red-950/30 rounded-lg text-neutral-400 hover:text-red-400 transition-colors">
+                        <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+                      </button>
+                    )}
                   </div>
-                  {!av.is_default && (
-                    <button onClick={e => { e.stopPropagation(); setDeleteConfirm(av); }}
-                      className="p-1 hover:bg-red-950/30 rounded-lg text-neutral-400 hover:text-red-400 transition-colors">
-                      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
-                    </button>
-                  )}
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           )}
 
           <div className="space-y-5">
             {/* Weekly schedule card */}
-            <div className="bg-[#181818] rounded-2xl border border-neutral-800/80 shadow-sm p-6">
-              <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="bg-[#181818] rounded-2xl border border-neutral-800/80 shadow-sm p-4 sm:p-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                 <div>
                   <label className="block text-xs font-semibold text-neutral-400 uppercase tracking-wide mb-1.5">Schedule Name</label>
                   <input className={inputCls} value={name} onChange={e => setName(e.target.value)} />
@@ -152,18 +155,20 @@ export default function AvailabilityPage() {
               <div className="border-t border-neutral-800/80 pt-5">
                 <p className="text-sm font-semibold text-slate-200 mb-1">Weekly Hours</p>
                 <p className="text-xs text-neutral-500 mb-4">Set your regular availability for each day</p>
-                <div className="space-y-2.5">
+                <div className="space-y-3">
                   {schedules.map(s => (
-                    <div key={s.day_of_week} className="flex items-center gap-4">
-                      <label className="toggle-switch flex-shrink-0">
-                        <input type="checkbox" checked={!!s.is_active} onChange={() => setSchedules(sc => sc.map(d => d.day_of_week === s.day_of_week ? { ...d, is_active: !d.is_active } : d))} />
-                        <span className="toggle-slider" />
-                      </label>
-                      <span className={`w-24 text-sm font-medium flex-shrink-0 ${s.is_active ? 'text-slate-200' : 'text-neutral-500'}`}>
-                        {DAY_NAMES[s.day_of_week]}
-                      </span>
+                    <div key={s.day_of_week} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-xl bg-[#242424]/40 border border-neutral-800/40 sm:bg-transparent sm:border-0 sm:p-0 gap-3">
+                      <div className="flex items-center gap-3">
+                        <label className="toggle-switch flex-shrink-0">
+                          <input type="checkbox" checked={!!s.is_active} onChange={() => setSchedules(sc => sc.map(d => d.day_of_week === s.day_of_week ? { ...d, is_active: !d.is_active } : d))} />
+                          <span className="toggle-slider" />
+                        </label>
+                        <span className={`w-24 text-sm font-medium flex-shrink-0 ${s.is_active ? 'text-slate-200' : 'text-neutral-500'}`}>
+                          {DAY_NAMES[s.day_of_week]}
+                        </span>
+                      </div>
                       {s.is_active ? (
-                        <div className="flex items-center gap-2 flex-1">
+                        <div className="flex items-center gap-2 w-full sm:w-auto sm:flex-1 sm:max-w-xs ml-8 sm:ml-0">
                           <select className="flex-1 px-3 py-1.5 text-sm border border-neutral-800 rounded-lg outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-950/40 bg-[#1d1d1d] text-white"
                             value={s.start_time} onChange={e => setSchedules(sc => sc.map(d => d.day_of_week === s.day_of_week ? { ...d, start_time: e.target.value } : d))}>
                             {TIME_OPTIONS.map(t => <option key={t.value} value={t.value} className="bg-[#1d1d1d] text-white">{t.label}</option>)}
@@ -175,7 +180,7 @@ export default function AvailabilityPage() {
                           </select>
                         </div>
                       ) : (
-                        <span className="text-sm text-neutral-500 italic">Unavailable</span>
+                        <span className="text-sm text-neutral-500 italic ml-8 sm:ml-0">Unavailable</span>
                       )}
                     </div>
                   ))}
@@ -184,14 +189,14 @@ export default function AvailabilityPage() {
             </div>
 
             {/* Date Overrides card */}
-            <div className="bg-[#181818] rounded-2xl border border-neutral-800/80 shadow-sm p-6">
-              <div className="flex items-center justify-between mb-4">
+            <div className="bg-[#181818] rounded-2xl border border-neutral-800/80 shadow-sm p-4 sm:p-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
                 <div>
                   <p className="text-sm font-semibold text-slate-200">Date Overrides</p>
                   <p className="text-xs text-neutral-500 mt-0.5">Block specific dates or set custom hours</p>
                 </div>
                 <button onClick={() => setShowAddOverride(true)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-[#242424] hover:bg-neutral-800 text-slate-200 rounded-lg border border-neutral-800 transition-colors">
+                  className="flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-medium bg-[#242424] hover:bg-neutral-800 text-slate-200 rounded-lg border border-neutral-800 transition-colors w-full sm:w-auto">
                   <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                   Add Override
                 </button>
@@ -199,7 +204,7 @@ export default function AvailabilityPage() {
 
               {showAddOverride && (
                 <div className="bg-[#242424] border border-neutral-800/60 rounded-xl p-4 mb-4 space-y-3">
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-xs font-medium text-neutral-400 mb-1">Date</label>
                       <input type="date" className={inputCls} min={today} value={newOverride.date} onChange={e => setNewOverride(o => ({ ...o, date: e.target.value }))} />
@@ -236,23 +241,25 @@ export default function AvailabilityPage() {
               ) : (
                 <div className="space-y-2">
                   {overrides.map(ov => (
-                    <div key={ov.date} className="flex items-center gap-3 p-3 bg-[#242424] border border-neutral-800/60 rounded-xl">
-                      <div className="flex-1">
-                        <div className="text-sm font-medium text-slate-200">
+                    <div key={ov.date} className="flex flex-col sm:flex-row sm:items-center gap-3 p-3 bg-[#242424] border border-neutral-800/60 rounded-xl justify-between">
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-medium text-slate-200 truncate">
                           {new Date(ov.date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
                         </div>
-                        <div className="text-xs text-neutral-400 mt-0.5">
+                        <div className="text-xs text-neutral-400 mt-0.5 truncate">
                           {ov.is_blocked ? '🚫 Blocked' : `⏰ ${ov.start_time} – ${ov.end_time}`}
                           {ov.reason && ` · ${ov.reason}`}
                         </div>
                       </div>
-                      <span className={`text-xs font-medium px-2 py-1 rounded-full border ${ov.is_blocked ? 'bg-red-950/30 text-red-400 border-red-900/30' : 'bg-blue-950/30 text-blue-400 border-blue-900/30'}`}>
-                        {ov.is_blocked ? 'Blocked' : 'Custom'}
-                      </span>
-                      <button onClick={() => setOverrides(o => o.filter(x => x.date !== ov.date))}
-                        className="p-1.5 hover:bg-red-950/30 rounded-lg text-neutral-400 hover:text-red-400 transition-colors">
-                        <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                      </button>
+                      <div className="flex items-center gap-2.5 justify-end w-full sm:w-auto">
+                        <span className={`text-xs font-medium px-2 py-1 rounded-full border ${ov.is_blocked ? 'bg-red-950/30 text-red-400 border-red-900/30' : 'bg-blue-950/30 text-blue-400 border-blue-900/30'}`}>
+                          {ov.is_blocked ? 'Blocked' : 'Custom'}
+                        </span>
+                        <button onClick={() => setOverrides(o => o.filter(x => x.date !== ov.date))}
+                          className="p-1.5 hover:bg-red-950/30 rounded-lg text-neutral-400 hover:text-red-400 transition-colors">
+                          <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>

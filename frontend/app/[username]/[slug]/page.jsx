@@ -147,14 +147,14 @@ export default function BookingPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#101010] py-12 px-4 relative overflow-hidden flex items-center justify-center">
+    <div className="min-h-screen bg-[#101010] py-6 sm:py-12 px-4 relative overflow-hidden flex items-center justify-center">
       {/* Background radial glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-violet-600/5 rounded-full blur-[140px] pointer-events-none -z-10" />
 
       <div className="max-w-4xl w-full mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6">
           {/* Left sidebar */}
-          <div className="bg-[#181818] rounded-2xl border border-neutral-800/80 p-8 h-fit shadow-md text-slate-200">
+          <div className="bg-[#181818] rounded-2xl border border-neutral-800/80 p-5 sm:p-8 h-fit shadow-md text-slate-200">
             <div className="w-16 h-16 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 text-white text-2xl font-bold flex items-center justify-center mb-4 shadow-lg shadow-violet-500/10">
               {user?.name?.[0] || 'J'}
             </div>
@@ -201,7 +201,7 @@ export default function BookingPage() {
           </div>
 
           {/* Main content */}
-          <div className="bg-[#181818] rounded-2xl border border-neutral-800/80 p-8 shadow-md text-slate-200">
+          <div className="bg-[#181818] rounded-2xl border border-neutral-800/80 p-4 sm:p-8 shadow-md text-slate-200">
             {step === 'calendar' && (
               <div className="animate-in fade-in duration-200">
                 {!selectedDate ? (
@@ -216,7 +216,7 @@ export default function BookingPage() {
                       >
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg>
                       </button>
-                      <span className="text-lg font-bold text-slate-100">{MONTHS[viewDate.getMonth()]} {viewDate.getFullYear()}</span>
+                      <span className="text-base sm:text-lg font-bold text-slate-100">{MONTHS[viewDate.getMonth()]} {viewDate.getFullYear()}</span>
                       <button className="p-2 hover:bg-neutral-800 text-neutral-400 hover:text-white rounded-lg transition-colors" onClick={nextMonth}>
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
                       </button>
@@ -233,7 +233,7 @@ export default function BookingPage() {
                         const isToday = dateStr === today.toISOString().split('T')[0];
                         if (past) {
                           return (
-                            <div key={day} className="w-10 h-10 rounded-xl text-sm text-neutral-700 flex items-center justify-center mx-auto cursor-not-allowed opacity-30">
+                            <div key={day} className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl text-xs sm:text-sm text-neutral-700 flex items-center justify-center mx-auto cursor-not-allowed opacity-30">
                               {day}
                             </div>
                           );
@@ -242,7 +242,7 @@ export default function BookingPage() {
                           return (
                             <div
                               key={day}
-                              className={`w-10 h-10 rounded-xl cursor-pointer text-sm font-semibold text-violet-400 bg-violet-950/20 border border-violet-900/30 hover:bg-violet-600 hover:text-white hover:border-transparent transition-colors flex items-center justify-center mx-auto${isToday ? ' ring-2 ring-violet-400' : ''}`}
+                              className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl cursor-pointer text-xs sm:text-sm font-semibold text-violet-400 bg-violet-950/20 border border-violet-900/30 hover:bg-violet-600 hover:text-white hover:border-transparent transition-colors flex items-center justify-center mx-auto${isToday ? ' ring-2 ring-violet-400' : ''}`}
                               onClick={() => setSelectedDate(dateStr)}
                             >
                               {day}
@@ -250,7 +250,7 @@ export default function BookingPage() {
                           );
                         }
                         return (
-                          <div key={day} className="w-10 h-10 rounded-xl text-sm text-neutral-600 flex items-center justify-center mx-auto cursor-not-allowed">
+                          <div key={day} className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl text-xs sm:text-sm text-neutral-600 flex items-center justify-center mx-auto cursor-not-allowed">
                             {day}
                           </div>
                         );
@@ -286,7 +286,7 @@ export default function BookingPage() {
                         </button>
                       </div>
                     ) : (
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         {slots.map(slot => (
                           <button
                             key={slot.start}
