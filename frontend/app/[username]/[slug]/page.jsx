@@ -155,8 +155,8 @@ export default function BookingPage() {
         <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6">
           {/* Left sidebar */}
           <div className="bg-[#181818] rounded-2xl border border-neutral-800/80 p-5 sm:p-8 h-fit shadow-md text-slate-200">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 text-white text-2xl font-bold flex items-center justify-center mb-4 shadow-lg shadow-violet-500/10">
-              {user?.name?.[0] || 'J'}
+            <div className="w-16 h-16 rounded-full bg-neutral-800 border border-neutral-700/60 text-white text-2xl font-bold flex items-center justify-center mb-4 shadow-2xl">
+              {user?.name ? user.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'AS'}
             </div>
             <div className="text-sm text-neutral-400 font-medium mb-1">{user?.name}</div>
             <h1 className="text-2xl font-bold text-slate-100 mb-6" style={{ color: eventType?.color }}>{eventType?.title}</h1>
