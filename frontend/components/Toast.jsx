@@ -1,26 +1,13 @@
 'use client';
 import { useEffect } from 'react';
 
-export type ToastType = 'success' | 'error' | 'info';
-
-export interface Toast {
-  id: string;
-  message: string;
-  type: ToastType;
-}
-
-interface ToastItemProps {
-  toast: Toast;
-  onRemove: (id: string) => void;
-}
-
-const toastStyles: Record<ToastType, string> = {
+const toastStyles = {
   success: 'border-green-500/30',
   error:   'border-red-500/30',
   info:    'border-blue-500/30',
 };
 
-function ToastIcon({ type }: { type: ToastType }) {
+function ToastIcon({ type }) {
   if (type === 'success') {
     return (
       <span className="flex-shrink-0 w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center">
@@ -50,7 +37,7 @@ function ToastIcon({ type }: { type: ToastType }) {
   );
 }
 
-export function ToastItem({ toast, onRemove }: ToastItemProps) {
+export function ToastItem({ toast, onRemove }) {
   useEffect(() => {
     const timer = setTimeout(() => onRemove(toast.id), 4000);
     return () => clearTimeout(timer);
@@ -67,12 +54,7 @@ export function ToastItem({ toast, onRemove }: ToastItemProps) {
   );
 }
 
-interface ToastContainerProps {
-  toasts: Toast[];
-  onRemove: (id: string) => void;
-}
-
-export function ToastContainer({ toasts, onRemove }: ToastContainerProps) {
+export function ToastContainer({ toasts, onRemove }) {
   if (toasts.length === 0) return null;
   return (
     <div className="fixed bottom-5 right-5 z-[9999] flex flex-col gap-2">

@@ -2,29 +2,25 @@
 import { useState, useEffect, useCallback } from 'react';
 import { availabilityApi } from '@/lib/api';
 import { DAY_NAMES, TIMEZONES, TIME_OPTIONS } from '@/lib/utils';
-import { ToastContainer, Toast } from '@/components/Toast';
+import { ToastContainer } from '@/components/Toast';
 import ConfirmDialog from '@/components/ConfirmDialog';
 
-interface Schedule { day_of_week: number; start_time: string; end_time: string; is_active: number | boolean; }
-interface Override { id?: number; date: string; start_time: string | null; end_time: string | null; is_blocked: number | boolean; reason?: string; }
-interface AvailabilityRecord { id: number; name: string; timezone: string; is_default: number; schedules: Schedule[]; overrides: Override[]; }
-
-const DEFAULT_SCHEDULES = (): Schedule[] =>
+const DEFAULT_SCHEDULES = () =>
   Array.from({ length: 7 }, (_, i) => ({ day_of_week: i, start_time: '09:00', end_time: '17:00', is_active: i >= 1 && i <= 5 }));
 
 const inputCls = 'w-full px-3 py-2 text-sm border border-slate-200 rounded-lg outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100 bg-white transition-colors';
 
 export default function AvailabilityPage() {
-  const [availabilities, setAvailabilities] = useState<AvailabilityRecord[]>([]);
-  const [selected, setSelected] = useState<AvailabilityRecord | null>(null);
-  const [schedules, setSchedules] = useState<Schedule[]>(DEFAULT_SCHEDULES());
-  const [overrides, setOverrides] = useState<Override[]>([]);
+  const [availabilities, setAvailabilities] = useState([]);
+  const [selected, setSelected] = useState(null);
+  const [schedules, setSchedules] = useState(DEFAULT_SCHEDULES());
+  const [overrides, setOverrides] = useState([]);
   const [timezone, setTimezone] = useState('America/New_York');
   const [name, setName] = useState('Working Hours');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [toasts, setToasts] = useState<Toast[]>([]);
-  const [deleteConfirm, setDeleteConfirm] = useState<AvailabilityRecord | null>(null);
+  const [toasts, setToasts] = useState([]);
+  const [deleteConfirm, setDeleteConfirm] = useState(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [showNewModal, setShowNewModal] = useState(false);
   const [newName, setNewName] = useState('');
@@ -32,12 +28,12 @@ export default function AvailabilityPage() {
   const [showAddOverride, setShowAddOverride] = useState(false);
   const [newOverride, setNewOverride] = useState({ date: '', is_blocked: true, start_time: '09:00', end_time: '17:00', reason: '' });
 
-  const addToast = useCallback((msg: string, type: Toast['type'] = 'success') => {
+  const addToast = useCallback((msg, type = 'success') => {
     setToasts(t => [...t, { id: Date.now().toString(), message: msg, type }]);
   }, []);
-  const removeToast = useCallback((id: string) => setToasts(t => t.filter(x => x.id !== id)), []);
+  const removeToast = useCallback((id) => setToasts(t => t.filter(x => x.id !== id)), []);
 
-  const selectAvailability = (av: AvailabilityRecord) => {
+  const selectAvailability = (av) => {
     setSelected(av); setName(av.name); setTimezone(av.timezone);
     const merged = DEFAULT_SCHEDULES().map(def => av.schedules?.find(s => s.day_of_week === def.day_of_week) || def);
     setSchedules(merged);
@@ -47,8 +43,8 @@ export default function AvailabilityPage() {
   const fetchAvailability = useCallback(async () => {
     setLoading(true);
     const res = await availabilityApi.get();
-    if (res.success && (res.data as any)?.length > 0) {
-      const avs = res.data as AvailabilityRecord[];
+    if (res.success && res.data?.length > 0) {
+      const avs = res.data;
       setAvailabilities(avs);
       selectAvailability(avs.find(a => a.is_default) || avs[0]);
     }
@@ -60,16 +56,17 @@ export default function AvailabilityPage() {
   const handleSave = async () => {
     setSaving(true);
     const res = await availabilityApi.update({ timezone, name, schedules, overrides });
+    setSaving(true); // wait, let's keep setSaving(false) like original
     setSaving(false);
     if (res.success) { addToast('Availability saved!'); fetchAvailability(); }
-    else addToast((res as any).error || 'Failed to save', 'error');
+    else addToast(res.error || 'Failed to save', 'error');
   };
 
   const handleCreateSchedule = async () => {
     if (!newName.trim()) return;
     const res = await availabilityApi.create({ name: newName, timezone: newTimezone, schedules: DEFAULT_SCHEDULES() });
     if (res.success) { addToast('Schedule created!'); setShowNewModal(false); setNewName(''); fetchAvailability(); }
-    else addToast((res as any).error || 'Failed', 'error');
+    else addToast(res.error || 'Failed', 'error');
   };
 
   const handleDelete = async () => {
@@ -78,12 +75,12 @@ export default function AvailabilityPage() {
     const res = await availabilityApi.delete(deleteConfirm.id);
     setDeleteLoading(false);
     if (res.success) { addToast('Schedule deleted'); setDeleteConfirm(null); fetchAvailability(); }
-    else addToast((res as any).error || 'Failed', 'error');
+    else addToast(res.error || 'Failed', 'error');
   };
 
   const addOverride = () => {
     if (!newOverride.date) return;
-    const ov: Override = { date: newOverride.date, is_blocked: newOverride.is_blocked, start_time: newOverride.is_blocked ? null : newOverride.start_time, end_time: newOverride.is_blocked ? null : newOverride.end_time, reason: newOverride.reason };
+    const ov = { date: newOverride.date, is_blocked: newOverride.is_blocked, start_time: newOverride.is_blocked ? null : newOverride.start_time, end_time: newOverride.is_blocked ? null : newOverride.end_time, reason: newOverride.reason };
     const existing = overrides.findIndex(o => o.date === newOverride.date);
     setOverrides(o => existing >= 0 ? o.map((item, i) => i === existing ? ov : item) : [...o, ov]);
     setShowAddOverride(false);

@@ -1,38 +1,38 @@
-export function formatDate(isoString: string): string {
+export function formatDate(isoString) {
   return new Date(isoString).toLocaleDateString('en-US', {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
   });
 }
 
-export function formatTime(isoString: string): string {
+export function formatTime(isoString) {
   return new Date(isoString).toLocaleTimeString('en-US', {
     hour: 'numeric', minute: '2-digit', hour12: true,
   });
 }
 
-export function formatDateTime(isoString: string): string {
+export function formatDateTime(isoString) {
   return new Date(isoString).toLocaleString('en-US', {
     weekday: 'short', month: 'short', day: 'numeric',
     hour: 'numeric', minute: '2-digit', hour12: true,
   });
 }
 
-export function formatDuration(minutes: number): string {
+export function formatDuration(minutes) {
   if (minutes < 60) return `${minutes} min`;
   const h = Math.floor(minutes / 60);
   const m = minutes % 60;
   return m ? `${h}h ${m}m` : `${h} hour${h > 1 ? 's' : ''}`;
 }
 
-export function getInitials(name: string): string {
+export function getInitials(name) {
   return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
 }
 
-export function isUpcoming(isoString: string): boolean {
+export function isUpcoming(isoString) {
   return new Date(isoString) > new Date();
 }
 
-export function classNames(...classes: (string | boolean | undefined | null)[]): string {
+export function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
@@ -64,7 +64,7 @@ export const TIME_OPTIONS = Array.from({ length: 48 }, (_, i) => {
   return { label, value };
 });
 
-export function getStatusBadgeClass(status: string): string {
+export function getStatusBadgeClass(status) {
   switch (status) {
     case 'confirmed': return 'badge-success';
     case 'cancelled': return 'badge-error';

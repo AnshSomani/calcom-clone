@@ -3,17 +3,10 @@ import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { bookingsApi } from '@/lib/api';
 import { formatDate, formatTime, formatDuration } from '@/lib/utils';
-import { ToastContainer, Toast } from '@/components/Toast';
+import { ToastContainer } from '@/components/Toast';
 import ConfirmDialog from '@/components/ConfirmDialog';
 
-interface Booking {
-  id: number; uid: string; title: string; booker_name: string; booker_email: string;
-  start_time: string; end_time: string; status: string; notes: string;
-  event_type_title: string; color: string; duration: number; slug: string;
-}
-type TabType = 'upcoming' | 'past' | 'cancelled';
-
-const statusStyles: Record<string, string> = {
+const statusStyles = {
   confirmed: 'bg-emerald-100 text-emerald-700',
   cancelled: 'bg-red-100 text-red-600',
   pending: 'bg-amber-100 text-amber-700',
@@ -21,24 +14,24 @@ const statusStyles: Record<string, string> = {
 };
 
 export default function BookingsPage() {
-  const [activeTab, setActiveTab] = useState<TabType>('upcoming');
-  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [activeTab, setActiveTab] = useState('upcoming');
+  const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [cancelTarget, setCancelTarget] = useState<Booking | null>(null);
+  const [cancelTarget, setCancelTarget] = useState(null);
   const [cancelReason, setCancelReason] = useState('');
   const [cancelLoading, setCancelLoading] = useState(false);
-  const [toasts, setToasts] = useState<Toast[]>([]);
+  const [toasts, setToasts] = useState([]);
   const [counts, setCounts] = useState({ upcoming: 0, past: 0, cancelled: 0 });
 
-  const addToast = useCallback((msg: string, type: Toast['type'] = 'success') => {
+  const addToast = useCallback((msg, type = 'success') => {
     setToasts(t => [...t, { id: Date.now().toString(), message: msg, type }]);
   }, []);
-  const removeToast = useCallback((id: string) => setToasts(t => t.filter(x => x.id !== id)), []);
+  const removeToast = useCallback((id) => setToasts(t => t.filter(x => x.id !== id)), []);
 
-  const fetchBookings = useCallback(async (tab: TabType) => {
+  const fetchBookings = useCallback(async (tab) => {
     setLoading(true);
     const res = await bookingsApi.list(tab);
-    if (res.success) setBookings((res.data as Booking[]) || []);
+    if (res.success) setBookings(res.data || []);
     setLoading(false);
   }, []);
 
@@ -47,9 +40,9 @@ export default function BookingsPage() {
       bookingsApi.list('upcoming'), bookingsApi.list('past'), bookingsApi.list('cancelled'),
     ]);
     setCounts({
-      upcoming: up.success ? ((up.data as any[]) || []).length : 0,
-      past: past.success ? ((past.data as any[]) || []).length : 0,
-      cancelled: can.success ? ((can.data as any[]) || []).length : 0,
+      upcoming: up.success ? (up.data || []).length : 0,
+      past: past.success ? (past.data || []).length : 0,
+      cancelled: can.success ? (can.data || []).length : 0,
     });
   }, []);
 
@@ -64,10 +57,10 @@ export default function BookingsPage() {
     if (res.success) {
       addToast('Booking cancelled'); setCancelTarget(null); setCancelReason('');
       fetchBookings(activeTab); fetchCounts();
-    } else addToast((res as any).error || 'Failed to cancel', 'error');
+    } else addToast(res.error || 'Failed to cancel', 'error');
   };
 
-  const tabs: { key: TabType; label: string }[] = [
+  const tabs = [
     { key: 'upcoming', label: 'Upcoming' },
     { key: 'past', label: 'Past' },
     { key: 'cancelled', label: 'Cancelled' },

@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { formatDuration } from '@/lib/utils';
 
 export default function ProfilePage() {
-  const [eventTypes, setEventTypes] = useState<any[]>([]);
-  const [user, setUser] = useState<any>(null);
+  const [eventTypes, setEventTypes] = useState([]);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -14,7 +14,7 @@ export default function ProfilePage() {
       .then(r => r.json())
       .then(data => {
         if (data.success) {
-          const active = data.data.filter((et: any) => et.is_active);
+          const active = data.data.filter((et) => et.is_active);
           setEventTypes(active);
           if (active.length > 0) {
             setUser({ name: active[0].user_name, username: active[0].username });

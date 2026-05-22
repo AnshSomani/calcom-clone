@@ -1,57 +1,52 @@
 'use client';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { publicApi } from '@/lib/api';
 import { formatDuration, formatDate, formatTime, DAY_NAMES_SHORT } from '@/lib/utils';
-
-interface EventType { id: number; title: string; description: string; duration: number; color: string; location: string; buffer_before: number; buffer_after: number; slug: string; }
-interface User { name: string; username: string; bio: string; }
-interface Question { id: number; label: string; type: string; placeholder: string; is_required: number; options?: string; }
-interface TimeSlot { start: string; end: string; startTime: string; endTime: string; }
 
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
 export default function BookingPage() {
   const params = useParams();
   const router = useRouter();
-  const username = params.username as string;
-  const slug = params.slug as string;
+  const username = params.username;
+  const slug = params.slug;
 
-  const [user, setUser] = useState<User | null>(null);
-  const [eventType, setEventType] = useState<EventType | null>(null);
-  const [questions, setQuestions] = useState<Question[]>([]);
+  const [user, setUser] = useState(null);
+  const [eventType, setEventType] = useState(null);
+  const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   // Calendar state
   const today = new Date();
   const [viewDate, setViewDate] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  const [availableDates, setAvailableDates] = useState<string[]>([]);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [availableDates, setAvailableDates] = useState([]);
   const [datesLoading, setDatesLoading] = useState(false);
 
   // Slot state
-  const [slots, setSlots] = useState<TimeSlot[]>([]);
+  const [slots, setSlots] = useState([]);
   const [slotsLoading, setSlotsLoading] = useState(false);
-  const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
+  const [selectedSlot, setSelectedSlot] = useState(null);
 
   // Form state
-  const [step, setStep] = useState<'calendar' | 'form' | 'confirmed'>('calendar');
+  const [step, setStep] = useState('calendar');
   const [form, setForm] = useState({ name: '', email: '', notes: '' });
-  const [customAnswers, setCustomAnswers] = useState<Record<number, string>>({});
-  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [customAnswers, setCustomAnswers] = useState({});
+  const [formErrors, setFormErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
-  const [confirmedBooking, setConfirmedBooking] = useState<any>(null);
+  const [confirmedBooking, setConfirmedBooking] = useState(null);
 
   // Load event type
   useEffect(() => {
     publicApi.getEventType(username, slug).then(res => {
       if (res.success) {
-        const d = res.data as any;
+        const d = res.data;
         setUser(d.user);
         setEventType(d.eventType);
         setQuestions(d.questions || []);
-      } else setError((res as any).error || 'Event not found');
+      } else setError(res.error || 'Event not found');
       setLoading(false);
     });
   }, [username, slug]);
@@ -62,7 +57,7 @@ export default function BookingPage() {
     const month = `${viewDate.getFullYear()}-${String(viewDate.getMonth() + 1).padStart(2, '0')}`;
     setDatesLoading(true);
     publicApi.getAvailableDates(username, slug, month).then(res => {
-      setAvailableDates(res.success ? (res.data as string[]) : []);
+      setAvailableDates(res.success ? res.data : []);
       setDatesLoading(false);
     });
   }, [viewDate, eventType, username, slug]);
@@ -74,7 +69,7 @@ export default function BookingPage() {
     setSlots([]);
     setSelectedSlot(null);
     publicApi.getSlots(username, slug, selectedDate).then(res => {
-      setSlots(res.success ? (res.data as TimeSlot[]) : []);
+      setSlots(res.success ? res.data : []);
       setSlotsLoading(false);
     });
   }, [selectedDate, username, slug]);
@@ -87,26 +82,26 @@ export default function BookingPage() {
     const month = viewDate.getMonth();
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const days: (number | null)[] = Array(firstDay).fill(null);
+    const days = Array(firstDay).fill(null);
     for (let d = 1; d <= daysInMonth; d++) days.push(d);
     while (days.length % 7 !== 0) days.push(null);
     return days;
   };
 
-  const getDateStr = (day: number) => {
+  const getDateStr = (day) => {
     const y = viewDate.getFullYear();
     const m = String(viewDate.getMonth() + 1).padStart(2, '0');
     return `${y}-${m}-${String(day).padStart(2, '0')}`;
   };
 
-  const isPast = (day: number) => {
+  const isPast = (day) => {
     const d = new Date(viewDate.getFullYear(), viewDate.getMonth(), day);
     d.setHours(23, 59, 59);
     return d < today;
   };
 
   const validateForm = () => {
-    const e: Record<string, string> = {};
+    const e = {};
     if (!form.name.trim()) e.name = 'Name is required';
     if (!form.email.trim()) e.email = 'Email is required';
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Invalid email';
@@ -129,9 +124,9 @@ export default function BookingPage() {
     setSubmitting(false);
     if (res.success) {
       setConfirmedBooking(res.data);
-      router.push(`/booking/${(res.data as any).uid}`);
+      router.push(`/booking/${res.data.uid}`);
     } else {
-      setFormErrors({ submit: (res as any).error || 'Failed to book' });
+      setFormErrors({ submit: res.error || 'Failed to book' });
     }
   };
 

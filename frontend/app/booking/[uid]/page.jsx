@@ -2,15 +2,15 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { publicApi, bookingsApi } from '@/lib/api';
+import { publicApi } from '@/lib/api';
 import { formatDate, formatTime, formatDuration } from '@/lib/utils';
 
 export default function BookingConfirmPage() {
   const params = useParams();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const uid = params.uid as string;
-  const [booking, setBooking] = useState<any>(null);
+  const uid = params.uid;
+  const [booking, setBooking] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [cancelling, setCancelling] = useState(false);

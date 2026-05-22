@@ -1,21 +1,9 @@
 'use client';
-interface ConfirmDialogProps {
-  isOpen: boolean;
-  title: string;
-  description: string;
-  confirmText?: string;
-  cancelText?: string;
-  variant?: 'danger' | 'primary';
-  onConfirm: () => void;
-  onCancel: () => void;
-  loading?: boolean;
-  extraContent?: React.ReactNode;
-}
 
 export default function ConfirmDialog({
   isOpen, title, description, confirmText = 'Confirm', cancelText = 'Cancel',
   variant = 'danger', onConfirm, onCancel, loading, extraContent,
-}: ConfirmDialogProps) {
+}) {
   if (!isOpen) return null;
 
   const confirmBtnClass =

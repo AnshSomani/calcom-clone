@@ -1,9 +1,6 @@
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
 
-async function apiRequest<T>(
-  endpoint: string,
-  options: RequestInit = {}
-): Promise<{ success: boolean; data?: T; error?: string }> {
+async function apiRequest(endpoint, options = {}) {
   try {
     const res = await fetch(`${API_BASE}${endpoint}`, {
       headers: { 'Content-Type': 'application/json', ...options.headers },
@@ -14,7 +11,7 @@ async function apiRequest<T>(
       throw new Error(json.error || `HTTP ${res.status}`);
     }
     return json;
-  } catch (err: any) {
+  } catch (err) {
     return { success: false, error: err.message || 'Network error' };
   }
 }
@@ -22,40 +19,40 @@ async function apiRequest<T>(
 // ── Event Types ──────────────────────────────────────────────
 export const eventTypesApi = {
   list: () => apiRequest('/event-types'),
-  get: (id: number) => apiRequest(`/event-types/${id}`),
-  create: (data: any) => apiRequest('/event-types', { method: 'POST', body: JSON.stringify(data) }),
-  update: (id: number, data: any) => apiRequest(`/event-types/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
-  delete: (id: number) => apiRequest(`/event-types/${id}`, { method: 'DELETE' }),
-  toggle: (id: number) => apiRequest(`/event-types/${id}/toggle`, { method: 'PATCH' }),
+  get: (id) => apiRequest(`/event-types/${id}`),
+  create: (data) => apiRequest('/event-types', { method: 'POST', body: JSON.stringify(data) }),
+  update: (id, data) => apiRequest(`/event-types/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  delete: (id) => apiRequest(`/event-types/${id}`, { method: 'DELETE' }),
+  toggle: (id) => apiRequest(`/event-types/${id}/toggle`, { method: 'PATCH' }),
 };
 
 // ── Availability ─────────────────────────────────────────────
 export const availabilityApi = {
   get: () => apiRequest('/availability'),
-  update: (data: any) => apiRequest('/availability', { method: 'PUT', body: JSON.stringify(data) }),
-  create: (data: any) => apiRequest('/availability', { method: 'POST', body: JSON.stringify(data) }),
-  delete: (id: number) => apiRequest(`/availability/${id}`, { method: 'DELETE' }),
+  update: (data) => apiRequest('/availability', { method: 'PUT', body: JSON.stringify(data) }),
+  create: (data) => apiRequest('/availability', { method: 'POST', body: JSON.stringify(data) }),
+  delete: (id) => apiRequest(`/availability/${id}`, { method: 'DELETE' }),
 };
 
 // ── Bookings ─────────────────────────────────────────────────
 export const bookingsApi = {
-  list: (status?: string) => apiRequest(`/bookings${status ? `?status=${status}` : ''}`),
-  get: (id: number) => apiRequest(`/bookings/${id}`),
-  cancel: (id: number, reason?: string) =>
+  list: (status) => apiRequest(`/bookings${status ? `?status=${status}` : ''}`),
+  get: (id) => apiRequest(`/bookings/${id}`),
+  cancel: (id, reason) =>
     apiRequest(`/bookings/${id}/cancel`, { method: 'PUT', body: JSON.stringify({ reason }) }),
 };
 
 // ── Public ───────────────────────────────────────────────────
 export const publicApi = {
-  getEventType: (username: string, slug: string) =>
+  getEventType: (username, slug) =>
     apiRequest(`/public/${username}/${slug}`),
-  getAvailableDates: (username: string, slug: string, month: string) =>
+  getAvailableDates: (username, slug, month) =>
     apiRequest(`/public/${username}/${slug}/available-dates?month=${month}`),
-  getSlots: (username: string, slug: string, date: string, excludeBookingId?: string) =>
+  getSlots: (username, slug, date, excludeBookingId) =>
     apiRequest(`/public/${username}/${slug}/slots?date=${date}${excludeBookingId ? `&excludeBookingId=${excludeBookingId}` : ''}`),
-  book: (username: string, slug: string, data: any) =>
+  book: (username, slug, data) =>
     apiRequest(`/public/${username}/${slug}/book`, { method: 'POST', body: JSON.stringify(data) }),
-  getBooking: (uid: string) => apiRequest(`/public/booking/${uid}`),
-  reschedule: (uid: string, data: any) =>
+  getBooking: (uid) => apiRequest(`/public/booking/${uid}`),
+  reschedule: (uid, data) =>
     apiRequest(`/public/booking/${uid}/reschedule`, { method: 'POST', body: JSON.stringify(data) }),
 };

@@ -2,23 +2,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import { eventTypesApi } from '@/lib/api';
 import { EVENT_COLORS, formatDuration } from '@/lib/utils';
-import { ToastContainer, Toast } from '@/components/Toast';
+import { ToastContainer } from '@/components/Toast';
 import ConfirmDialog from '@/components/ConfirmDialog';
-
-interface EventType {
-  id: number; title: string; slug: string; description: string;
-  duration: number; color: string; location: string; is_active: boolean;
-  buffer_before: number; buffer_after: number; username: string;
-  question_count?: number; requires_confirmation?: boolean;
-}
-interface Question { label: string; type: string; placeholder: string; is_required: boolean; options?: string[]; }
 
 const DURATIONS = [10, 15, 20, 25, 30, 45, 60, 90, 120];
 const LOCATIONS = ['Google Meet', 'Zoom', 'Microsoft Teams', 'Phone Call', 'In-person', 'Custom'];
 
-function EventTypeModal({ eventType, onClose, onSave }: {
-  eventType?: EventType | null; onClose: () => void; onSave: () => void;
-}) {
+function EventTypeModal({ eventType, onClose, onSave }) {
   const isEdit = !!eventType;
   const [form, setForm] = useState({
     title: eventType?.title || '', slug: eventType?.slug || '',
@@ -27,27 +17,27 @@ function EventTypeModal({ eventType, onClose, onSave }: {
     buffer_before: eventType?.buffer_before || 0, buffer_after: eventType?.buffer_after || 0,
     requires_confirmation: !!eventType?.requires_confirmation,
   });
-  const [questions, setQuestions] = useState<Question[]>([]);
+  const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [activeTab, setActiveTab] = useState<'general' | 'questions'>('general');
+  const [errors, setErrors] = useState({});
+  const [activeTab, setActiveTab] = useState('general');
 
   useEffect(() => {
     if (isEdit) {
-      eventTypesApi.get(eventType!.id).then(r => {
-        if (r.success && (r.data as any)?.questions) setQuestions((r.data as any).questions);
+      eventTypesApi.get(eventType.id).then(r => {
+        if (r.success && r.data?.questions) setQuestions(r.data.questions);
       });
     }
   }, [isEdit, eventType]);
 
-  const autoSlug = (title: string) =>
+  const autoSlug = (title) =>
     title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
-  const handleTitleChange = (title: string) =>
+  const handleTitleChange = (title) =>
     setForm(f => ({ ...f, title, ...(isEdit ? {} : { slug: autoSlug(title) }) }));
 
   const validate = () => {
-    const e: Record<string, string> = {};
+    const e = {};
     if (!form.title.trim()) e.title = 'Title is required';
     if (!form.slug.trim()) e.slug = 'URL slug is required';
     if (!/^[a-z0-9-]+$/.test(form.slug)) e.slug = 'Slug must be lowercase letters, numbers and hyphens only';
@@ -60,19 +50,19 @@ function EventTypeModal({ eventType, onClose, onSave }: {
     if (Object.keys(e).length) { setErrors(e); return; }
     setLoading(true);
     const res = isEdit
-      ? await eventTypesApi.update(eventType!.id, { ...form, questions })
+      ? await eventTypesApi.update(eventType.id, { ...form, questions })
       : await eventTypesApi.create({ ...form, questions });
     setLoading(false);
     if (res.success) { onSave(); onClose(); }
-    else setErrors({ submit: (res as any).error || 'Failed to save' });
+    else setErrors({ submit: res.error || 'Failed to save' });
   };
 
   const addQuestion = () => setQuestions(q => [...q, { label: '', type: 'text', placeholder: '', is_required: false }]);
-  const removeQuestion = (i: number) => setQuestions(q => q.filter((_, idx) => idx !== i));
-  const updateQuestion = (i: number, field: string, value: any) =>
+  const removeQuestion = (i) => setQuestions(q => q.filter((_, idx) => idx !== i));
+  const updateQuestion = (i, field, value) =>
     setQuestions(q => q.map((item, idx) => idx === i ? { ...item, [field]: value } : item));
 
-  const inputCls = (err?: string) =>
+  const inputCls = (err) =>
     `w-full px-3 py-2 text-sm border rounded-lg outline-none transition-colors bg-white
      ${err ? 'border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100' : 'border-slate-200 focus:border-violet-500 focus:ring-2 focus:ring-violet-100'}`;
 
@@ -90,7 +80,7 @@ function EventTypeModal({ eventType, onClose, onSave }: {
 
         {/* Tabs */}
         <div className="flex gap-1 px-6 pt-3 border-b border-slate-100">
-          {(['general', 'questions'] as const).map(tab => (
+          {['general', 'questions'].map(tab => (
             <button key={tab} onClick={() => setActiveTab(tab)}
               className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors capitalize -mb-px border-b-2
                 ${activeTab === tab ? 'text-violet-600 border-violet-600' : 'text-slate-500 border-transparent hover:text-slate-700'}`}>
@@ -142,7 +132,7 @@ function EventTypeModal({ eventType, onClose, onSave }: {
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
-                {(['buffer_before', 'buffer_after'] as const).map(field => (
+                {['buffer_before', 'buffer_after'].map(field => (
                   <div key={field}>
                     <label className="block text-xs font-semibold text-slate-700 mb-1.5 uppercase tracking-wide">
                       Buffer {field === 'buffer_before' ? 'Before' : 'After'} (min)
@@ -228,31 +218,31 @@ function EventTypeModal({ eventType, onClose, onSave }: {
 }
 
 export default function EventTypesPage() {
-  const [eventTypes, setEventTypes] = useState<EventType[]>([]);
+  const [eventTypes, setEventTypes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
-  const [editingET, setEditingET] = useState<EventType | null>(null);
-  const [deleteConfirm, setDeleteConfirm] = useState<EventType | null>(null);
+  const [editingET, setEditingET] = useState(null);
+  const [deleteConfirm, setDeleteConfirm] = useState(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
-  const [toasts, setToasts] = useState<Toast[]>([]);
-  const [copiedId, setCopiedId] = useState<number | null>(null);
+  const [toasts, setToasts] = useState([]);
+  const [copiedId, setCopiedId] = useState(null);
 
-  const addToast = useCallback((message: string, type: Toast['type'] = 'success') => {
+  const addToast = useCallback((message, type = 'success') => {
     const id = Date.now().toString();
     setToasts(t => [...t, { id, message, type }]);
   }, []);
-  const removeToast = useCallback((id: string) => setToasts(t => t.filter(x => x.id !== id)), []);
+  const removeToast = useCallback((id) => setToasts(t => t.filter(x => x.id !== id)), []);
 
   const fetchEventTypes = useCallback(async () => {
     setLoading(true);
     const res = await eventTypesApi.list();
-    if (res.success) setEventTypes((res.data as EventType[]) || []);
+    if (res.success) setEventTypes(res.data || []);
     setLoading(false);
   }, []);
 
   useEffect(() => { fetchEventTypes(); }, [fetchEventTypes]);
 
-  const handleToggle = async (et: EventType) => {
+  const handleToggle = async (et) => {
     await eventTypesApi.toggle(et.id);
     fetchEventTypes();
     addToast(`${et.title} ${et.is_active ? 'disabled' : 'enabled'}`);
@@ -264,10 +254,10 @@ export default function EventTypesPage() {
     const res = await eventTypesApi.delete(deleteConfirm.id);
     setDeleteLoading(false);
     if (res.success) { addToast('Event type deleted'); setDeleteConfirm(null); fetchEventTypes(); }
-    else addToast((res as any).error || 'Failed to delete', 'error');
+    else addToast(res.error || 'Failed to delete', 'error');
   };
 
-  const copyLink = (et: EventType) => {
+  const copyLink = (et) => {
     navigator.clipboard.writeText(`${window.location.origin}/${et.username}/${et.slug}`);
     setCopiedId(et.id);
     setTimeout(() => setCopiedId(null), 2000);

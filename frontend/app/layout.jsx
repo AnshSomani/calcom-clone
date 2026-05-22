@@ -1,13 +1,12 @@
-import type { Metadata } from 'next';
 import './globals.css';
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'Cal.com Clone — Scheduling App',
   description: 'A powerful scheduling and booking application. Create event types, set your availability, and let others book time with you.',
   keywords: 'scheduling, booking, calendar, meetings, appointments',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>

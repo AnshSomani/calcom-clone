@@ -2,29 +2,27 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { publicApi } from '@/lib/api';
-import { formatDate, formatDuration, DAY_NAMES_SHORT } from '@/lib/utils';
+import { formatDate, DAY_NAMES_SHORT } from '@/lib/utils';
 
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-
-interface TimeSlot { start: string; end: string; startTime: string; endTime: string; }
 
 export default function ReschedulePage() {
   const params = useParams();
   const router = useRouter();
-  const uid = params.uid as string;
+  const uid = params.uid;
 
-  const [booking, setBooking] = useState<any>(null);
+  const [booking, setBooking] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   const today = new Date();
   const [viewDate, setViewDate] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
-  const [availableDates, setAvailableDates] = useState<string[]>([]);
+  const [availableDates, setAvailableDates] = useState([]);
   const [datesLoading, setDatesLoading] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  const [slots, setSlots] = useState<TimeSlot[]>([]);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [slots, setSlots] = useState([]);
   const [slotsLoading, setSlotsLoading] = useState(false);
-  const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
+  const [selectedSlot, setSelectedSlot] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
 
@@ -41,7 +39,7 @@ export default function ReschedulePage() {
     const month = `${viewDate.getFullYear()}-${String(viewDate.getMonth() + 1).padStart(2, '0')}`;
     setDatesLoading(true);
     publicApi.getAvailableDates(booking.username, booking.slug, month).then(res => {
-      setAvailableDates(res.success ? (res.data as string[]) : []);
+      setAvailableDates(res.success ? res.data : []);
       setDatesLoading(false);
     });
   }, [viewDate, booking]);
@@ -50,7 +48,7 @@ export default function ReschedulePage() {
     if (!selectedDate || !booking) return;
     setSlotsLoading(true);
     publicApi.getSlots(booking.username, booking.slug, selectedDate, uid).then(res => {
-      setSlots(res.success ? (res.data as TimeSlot[]) : []);
+      setSlots(res.success ? res.data : []);
       setSlotsLoading(false);
     });
   }, [selectedDate, booking, uid]);
@@ -59,19 +57,19 @@ export default function ReschedulePage() {
     const year = viewDate.getFullYear(); const month = viewDate.getMonth();
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const days: (number | null)[] = Array(firstDay).fill(null);
+    const days = Array(firstDay).fill(null);
     for (let d = 1; d <= daysInMonth; d++) days.push(d);
     while (days.length % 7 !== 0) days.push(null);
     return days;
   };
 
-  const getDateStr = (day: number) => {
+  const getDateStr = (day) => {
     const y = viewDate.getFullYear();
     const m = String(viewDate.getMonth() + 1).padStart(2, '0');
     return `${y}-${m}-${String(day).padStart(2, '0')}`;
   };
 
-  const isPast = (day: number) => {
+  const isPast = (day) => {
     const d = new Date(viewDate.getFullYear(), viewDate.getMonth(), day);
     d.setHours(23,59,59);
     return d < today;
@@ -84,9 +82,9 @@ export default function ReschedulePage() {
     const res = await publicApi.reschedule(uid, { startTime: selectedSlot.start, endTime: selectedSlot.end });
     setSubmitting(false);
     if (res.success) {
-      router.push(`/booking/${(res.data as any).uid}`);
+      router.push(`/booking/${res.data.uid}`);
     } else {
-      setSubmitError((res as any).error || 'Failed to reschedule');
+      setSubmitError(res.error || 'Failed to reschedule');
     }
   };
 
