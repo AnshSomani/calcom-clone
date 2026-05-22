@@ -16,6 +16,23 @@ A fully functional scheduling/booking web application that replicates Cal.com's 
 
 ---
 ## Pages:
+
+### 📅 Event Types Dashboard
+Configure customizable meeting types, durations, location options, and booking page URLs.
+![Event Types Dashboard](images/event-types.png)
+
+### 📝 Client Details & Booking Form
+A clean, interactive user form for entering attendee name, email address, and optional notes to confirm standard schedules.
+![Public Booking Details Form](images/booking-details.png)
+
+### 🗃️ Bookings Management
+A robust admin interface for hosts to view, reschedule, or cancel all upcoming, past, and cancelled scheduling items.
+![Bookings Management Dashboard](images/bookings.png)
+
+### ⏰ Availability Weekly Schedule & Date Overrides
+Flexible hours controls to configure custom standard slots per day, target timezones, and add specific dates blocker overrides.
+![Availability Weekly Schedule](images/availability.png)
+
 ---
 
 ## Features Implemented
