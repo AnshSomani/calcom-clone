@@ -9,7 +9,7 @@ export default function ConfirmDialog({
   const confirmBtnClass =
     variant === 'danger'
       ? 'px-4 py-2 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors flex items-center gap-2 disabled:opacity-50'
-      : 'px-4 py-2 text-sm font-semibold text-white bg-violet-600 hover:bg-violet-700 rounded-lg transition-colors flex items-center gap-2 disabled:opacity-50';
+      : 'px-4 py-2 text-sm font-semibold text-black bg-white hover:bg-neutral-200 rounded-lg transition-colors flex items-center gap-2 disabled:opacity-50';
 
   return (
     <div

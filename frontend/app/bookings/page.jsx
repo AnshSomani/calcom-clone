@@ -78,10 +78,10 @@ export default function BookingsPage() {
         {tabs.map(tab => (
           <button key={tab.key} onClick={() => setActiveTab(tab.key)}
             className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium -mb-px border-b-2 transition-colors flex-shrink-0
-              ${activeTab === tab.key ? 'text-violet-400 border-violet-400' : 'text-neutral-400 border-transparent hover:text-white'}`}>
+              ${activeTab === tab.key ? 'text-white border-white' : 'text-neutral-400 border-transparent hover:text-white'}`}>
             {tab.label}
             <span className={`text-xs px-2 py-0.5 rounded-full font-semibold border
-              ${activeTab === tab.key ? 'bg-violet-950/40 text-violet-300 border-violet-900/40' : 'bg-[#242424] text-neutral-400 border-neutral-800'}`}>
+              ${activeTab === tab.key ? 'bg-neutral-800 text-white border-neutral-700' : 'bg-[#242424] text-neutral-400 border-neutral-800'}`}>
               {counts[tab.key]}
             </span>
           </button>

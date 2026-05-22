@@ -39,10 +39,10 @@ export default function ProfilePage() {
           <>
             {/* Avatar & header */}
             <div className="text-center mb-10">
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 text-white text-4xl font-bold flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-violet-500/10">
-                {user?.name?.[0] || 'J'}
+              <div className="w-24 h-24 rounded-full bg-neutral-800 text-white text-4xl font-bold flex items-center justify-center mx-auto mb-6 shadow-2xl">
+                {user?.name?.[0] || 'A'}
               </div>
-              <h1 className="text-2xl font-bold text-slate-100 mb-2">{user?.name || 'John Doe'}</h1>
+              <h1 className="text-2xl font-bold text-slate-100 mb-2">{user?.name || 'Ansh Somani'}</h1>
               <p className="text-neutral-400 text-sm">Welcome! Please select a meeting type.</p>
             </div>
 

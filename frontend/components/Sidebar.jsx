@@ -145,12 +145,12 @@ export default function Sidebar({ isOpen, onClose }) {
 
         {/* User footer */}
         <div className="px-5 py-4 border-t border-neutral-800/80 flex items-center gap-3 bg-[#151515]">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-            JD
+          <div className="w-8 h-8 rounded-full bg-neutral-800 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+            AS
           </div>
           <div className="min-w-0">
-            <div className="text-white text-sm font-medium truncate">John Doe</div>
-            <div className="text-neutral-500 text-xs truncate">john@example.com</div>
+            <div className="text-white text-sm font-medium truncate">Ansh Somani</div>
+            <div className="text-neutral-500 text-xs truncate">anshsomani05@gmail.com</div>
           </div>
         </div>
       </aside>

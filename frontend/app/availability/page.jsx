@@ -104,7 +104,7 @@ export default function AvailabilityPage() {
             New Schedule
           </button>
           <button onClick={handleSave} disabled={saving}
-            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold rounded-xl transition-colors shadow-sm disabled:opacity-60">
+            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 bg-white hover:bg-neutral-200 text-black text-sm font-semibold rounded-xl transition-colors shadow-sm disabled:opacity-60">
             {saving ? <span className="spinner" /> : 'Save Changes'}
           </button>
         </div>
@@ -231,7 +231,7 @@ export default function AvailabilityPage() {
                   <input className={inputCls} placeholder="Reason (optional)" value={newOverride.reason} onChange={e => setNewOverride(o => ({ ...o, reason: e.target.value }))} />
                   <div className="flex gap-2">
                     <button onClick={() => setShowAddOverride(false)} className="px-3 py-1.5 text-xs font-medium text-slate-300 bg-[#181818] hover:bg-neutral-800 rounded-lg border border-neutral-800 transition-colors">Cancel</button>
-                    <button onClick={addOverride} className="px-3 py-1.5 text-xs font-semibold text-white bg-violet-600 hover:bg-violet-700 rounded-lg transition-colors">Add Override</button>
+                    <button onClick={addOverride} className="px-3 py-1.5 text-xs font-semibold text-black bg-white hover:bg-neutral-200 rounded-lg transition-colors">Add Override</button>
                   </div>
                 </div>
               )}
@@ -292,7 +292,7 @@ export default function AvailabilityPage() {
             </div>
             <div className="flex items-center justify-end gap-3 p-6 border-t border-neutral-800/80">
               <button onClick={() => setShowNewModal(false)} className="px-4 py-2 text-sm font-medium text-slate-300 bg-[#242424] hover:bg-neutral-800 rounded-lg transition-colors">Cancel</button>
-              <button onClick={handleCreateSchedule} className="px-4 py-2 text-sm font-semibold text-white bg-violet-600 hover:bg-violet-700 rounded-lg transition-colors">Create</button>
+              <button onClick={handleCreateSchedule} className="px-4 py-2 text-sm font-semibold text-black bg-white hover:bg-neutral-200 rounded-lg transition-colors">Create</button>
             </div>
           </div>
         </div>

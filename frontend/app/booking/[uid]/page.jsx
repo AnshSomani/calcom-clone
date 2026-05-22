@@ -148,7 +148,7 @@ export default function BookingConfirmPage() {
             </Link>
             <Link
               href={`/${booking?.username}/${booking?.slug}`}
-              className="flex-1 py-2.5 text-center bg-violet-600 hover:bg-violet-700 text-white font-semibold text-sm rounded-xl transition-colors"
+              className="flex-1 py-2.5 text-center bg-white hover:bg-neutral-200 text-black font-semibold text-sm rounded-xl transition-colors"
             >
               Book Again
             </Link>
@@ -158,7 +158,7 @@ export default function BookingConfirmPage() {
         {isCancelled && (
           <Link
             href={`/${booking?.username}/${booking?.slug}`}
-            className="w-full mt-8 py-2.5 flex items-center justify-center bg-violet-600 hover:bg-violet-700 text-white font-semibold text-sm rounded-xl transition-colors"
+            className="w-full mt-8 py-2.5 flex items-center justify-center bg-white hover:bg-neutral-200 text-black font-semibold text-sm rounded-xl transition-colors"
           >
             Book a New Time
           </Link>

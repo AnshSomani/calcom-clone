@@ -208,7 +208,7 @@ function EventTypeModal({ eventType, onClose, onSave }) {
         <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-neutral-800/80">
           <button onClick={onClose} className="px-4 py-2 text-sm font-medium text-slate-300 bg-[#242424] hover:bg-neutral-800 rounded-lg transition-colors">Cancel</button>
           <button onClick={handleSave} disabled={loading}
-            className="px-5 py-2 text-sm font-semibold text-white bg-violet-600 hover:bg-violet-700 rounded-lg transition-colors flex items-center gap-2 disabled:opacity-60">
+            className="px-5 py-2 text-sm font-semibold text-black bg-white hover:bg-neutral-200 rounded-lg transition-colors flex items-center gap-2 disabled:opacity-60">
             {loading ? <span className="spinner" /> : (isEdit ? 'Save Changes' : 'Create Event Type')}
           </button>
         </div>
@@ -273,7 +273,7 @@ export default function EventTypesPage() {
           <p className="text-neutral-400 text-sm mt-1">Configure different events for people to book on your calendar.</p>
         </div>
         <button onClick={() => { setEditingET(null); setModalOpen(true); }}
-          className="flex items-center justify-center gap-2 px-4 py-2.5 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold rounded-xl transition-colors shadow-sm w-full sm:w-auto">
+          className="flex items-center justify-center gap-2 px-4 py-2.5 bg-white hover:bg-neutral-200 text-black text-sm font-semibold rounded-xl transition-colors shadow-sm w-full sm:w-auto">
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           New Event Type
         </button>
@@ -291,7 +291,7 @@ export default function EventTypesPage() {
           <h3 className="font-bold text-slate-200 text-lg mb-2">No event types yet</h3>
           <p className="text-neutral-400 text-sm mb-6">Create your first event type to start accepting bookings.</p>
           <button onClick={() => setModalOpen(true)}
-            className="px-5 py-2.5 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold rounded-xl transition-colors">
+            className="px-5 py-2.5 bg-white hover:bg-neutral-200 text-black text-sm font-semibold rounded-xl transition-colors">
             Create Event Type
           </button>
         </div>

@@ -15,7 +15,7 @@ async function seed() {
   const userResult = await run(
     `INSERT INTO users (name, username, email, timezone, bio)
      VALUES ($1, $2, $3, $4, $5) RETURNING id`,
-    ['John Doe', 'john', 'john@example.com', 'America/New_York', 'Product designer & startup advisor. Book a call with me!']
+    ['Ansh Somani', 'john', 'anshsomani05@gmail.com', 'America/New_York', 'Product designer & startup advisor. Book a call with me!']
   );
   const userId = userResult.rows[0].id;
 
@@ -123,7 +123,7 @@ async function seed() {
   }
 
   console.log('✅ Database seeded:');
-  console.log('   - 1 user (john / john@example.com)');
+  console.log('   - 1 user (john / anshsomani05@gmail.com)');
   console.log(`   - ${eventTypes.length} event types with custom questions`);
   console.log('   - 2 availability schedules (Working Hours + Early Bird)');
   console.log('   - Date overrides: 1 blocked day, 1 custom hours day');

@@ -191,7 +191,7 @@ export default function ReschedulePage() {
                       return (
                         <div
                           key={day}
-                          className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl cursor-pointer text-xs sm:text-sm font-semibold text-violet-400 bg-violet-950/20 border border-violet-900/30 hover:bg-violet-600 hover:text-white hover:border-transparent transition-colors flex items-center justify-center mx-auto${isToday ? ' ring-2 ring-violet-400' : ''}`}
+                          className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl cursor-pointer text-xs sm:text-sm font-semibold text-white bg-neutral-800/80 border border-neutral-700/50 hover:bg-white hover:text-black hover:border-transparent transition-colors flex items-center justify-center mx-auto${isToday ? ' ring-2 ring-white' : ''}`}
                           onClick={() => setSelectedDate(dateStr)}
                         >
                           {day}
@@ -242,8 +242,8 @@ export default function ReschedulePage() {
                           key={slot.start}
                           className={`w-full py-3 rounded-xl text-sm font-semibold border-2 transition-all${
                             selectedSlot?.start === slot.start
-                              ? ' border-violet-600 bg-violet-600 text-white'
-                              : ' border-violet-900/30 bg-[#1d1d1d] text-violet-400 hover:border-violet-600 hover:bg-violet-600 hover:text-white'
+                              ? ' border-white bg-white text-black'
+                              : ' border-neutral-800 bg-[#1d1d1d] text-neutral-300 hover:border-white hover:bg-white hover:text-black'
                           }`}
                           onClick={() => setSelectedSlot(slot)}
                         >
@@ -253,7 +253,7 @@ export default function ReschedulePage() {
                     </div>
                     {selectedSlot && (
                       <button
-                        className="w-full py-3.5 bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-60 flex items-center justify-center"
+                        className="w-full py-3.5 bg-white hover:bg-neutral-200 text-black font-semibold rounded-xl transition-colors disabled:opacity-60 flex items-center justify-center"
                         onClick={handleConfirm}
                         disabled={submitting}
                       >
