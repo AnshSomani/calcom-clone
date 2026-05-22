@@ -39,7 +39,7 @@ const navItems = [
 
 const bottomItems = [
   {
-    href: '/john',
+    href: '/user_name',
     label: 'My Profile',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4">
@@ -83,10 +83,10 @@ export default function Sidebar({ isOpen, onClose }) {
             onClick={handleLinkClick}
             className="flex items-center gap-3 px-5 py-5 flex-1"
           >
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-              C
+            <div className="w-8 h-8 rounded-lg bg-[#242424] border border-neutral-800/80 flex items-center justify-center text-white text-[10px] font-black tracking-tighter flex-shrink-0">
+              Cal
             </div>
-            <span className="text-white font-semibold text-sm">Cal.com Clone</span>
+            <span className="text-white font-semibold text-sm">Cal.com</span>
           </Link>
           
           {/* Close button for mobile */}

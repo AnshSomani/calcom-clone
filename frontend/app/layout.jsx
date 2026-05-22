@@ -1,7 +1,7 @@
 import './globals.css';
 
 export const metadata = {
-  title: 'Cal.com Clone — Scheduling App',
+  title: 'Cal.com — Scheduling App',
   description: 'A powerful scheduling and booking application. Create event types, set your availability, and let others book time with you.',
   keywords: 'scheduling, booking, calendar, meetings, appointments',
 };

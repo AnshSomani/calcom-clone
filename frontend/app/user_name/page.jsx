@@ -74,7 +74,7 @@ export default function ProfilePage() {
 
             {/* Footer */}
             <div className="text-center mt-12 text-xs text-neutral-600">
-              Powered by Cal.com Clone
+              Powered by Cal.com
             </div>
           </>
         )}

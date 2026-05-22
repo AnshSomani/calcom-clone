@@ -3,7 +3,7 @@ const { getOne, getAll, run } = require('../database/db');
 // GET /api/availability
 async function getAvailability(req, res) {
   try {
-    const user = await getOne('SELECT id FROM users WHERE username = $1', ['john']);
+    const user = await getOne('SELECT id FROM users WHERE username = $1', ['user_name']);
     const availabilities = await getAll('SELECT * FROM availability WHERE user_id = $1 ORDER BY is_default DESC, id', [user.id]);
 
     const result = [];
@@ -23,7 +23,7 @@ async function getAvailability(req, res) {
 // PUT /api/availability
 async function updateAvailability(req, res) {
   try {
-    const user = await getOne('SELECT id FROM users WHERE username = $1', ['john']);
+    const user = await getOne('SELECT id FROM users WHERE username = $1', ['user_name']);
     const { timezone, schedules, overrides, name } = req.body;
 
     let availability = await getOne('SELECT * FROM availability WHERE user_id = $1 AND is_default = true', [user.id]);
@@ -67,7 +67,7 @@ async function updateAvailability(req, res) {
 // POST /api/availability
 async function createAvailability(req, res) {
   try {
-    const user = await getOne('SELECT id FROM users WHERE username = $1', ['john']);
+    const user = await getOne('SELECT id FROM users WHERE username = $1', ['user_name']);
     const { name, timezone, schedules, is_default } = req.body;
     if (!name) return res.status(400).json({ success: false, error: 'name is required' });
 
@@ -97,7 +97,7 @@ async function createAvailability(req, res) {
 // DELETE /api/availability/:id
 async function deleteAvailability(req, res) {
   try {
-    const user = await getOne('SELECT id FROM users WHERE username = $1', ['john']);
+    const user = await getOne('SELECT id FROM users WHERE username = $1', ['user_name']);
     const av = await getOne('SELECT * FROM availability WHERE id = $1 AND user_id = $2', [req.params.id, user.id]);
     if (!av) return res.status(404).json({ success: false, error: 'Schedule not found' });
     if (av.is_default) return res.status(400).json({ success: false, error: 'Cannot delete the default schedule' });

@@ -4,7 +4,7 @@ const { sendCancellationEmail } = require('../middleware/emailService');
 // GET /api/bookings?status=upcoming|past|cancelled
 async function listBookings(req, res) {
   try {
-    const user = await getOne('SELECT id FROM users WHERE username = $1', ['john']);
+    const user = await getOne('SELECT id FROM users WHERE username = $1', ['user_name']);
     const { status } = req.query;
     const now = new Date().toISOString();
 

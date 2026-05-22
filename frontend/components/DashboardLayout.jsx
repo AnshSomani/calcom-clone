@@ -15,10 +15,10 @@ export default function DashboardLayout({ children }) {
         {/* Mobile Header */}
         <header className="lg:hidden flex items-center justify-between px-5 py-4 border-b border-neutral-900 bg-[#121212] sticky top-0 z-30">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
-              C
+            <div className="w-8 h-8 rounded-lg bg-[#242424] border border-neutral-800/80 flex items-center justify-center text-white text-[10px] font-black tracking-tighter">
+              Cal
             </div>
-            <span className="text-white font-semibold text-sm">Cal.com Clone</span>
+            <span className="text-white font-semibold text-sm">Cal.com</span>
           </div>
           <button 
             onClick={() => setSidebarOpen(true)} 

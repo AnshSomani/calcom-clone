@@ -105,7 +105,7 @@ function EventTypeModal({ eventType, onClose, onSave }) {
               <div>
                 <label className="block text-xs font-semibold text-neutral-400 mb-1.5 uppercase tracking-wide">URL Slug *</label>
                 <div className="flex border border-neutral-800 rounded-lg overflow-hidden focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-950/40">
-                  <span className="bg-[#242424] text-neutral-400 text-sm px-3 py-2 border-r border-neutral-800 whitespace-nowrap">cal.com/john/</span>
+                  <span className="bg-[#242424] text-neutral-400 text-sm px-3 py-2 border-r border-neutral-800 whitespace-nowrap">cal.com/user_name/</span>
                   <input className="flex-1 px-3 py-2 text-sm outline-none bg-[#1d1d1d] text-white"
                     value={form.slug} placeholder="30min"
                     onChange={e => setForm(f => ({ ...f, slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '') }))} />

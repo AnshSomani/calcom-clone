@@ -8,7 +8,7 @@ async function listEventTypes(req, res) {
         (SELECT COUNT(*)::int FROM booking_questions bq WHERE bq.event_type_id = et.id) as question_count
       FROM event_types et
       JOIN users u ON et.user_id = u.id
-      WHERE et.user_id = (SELECT id FROM users WHERE username = 'john')
+      WHERE et.user_id = (SELECT id FROM users WHERE username = 'user_name')
       ORDER BY et.created_at DESC
     `);
     res.json({ success: true, data: eventTypes });
@@ -40,7 +40,7 @@ async function getEventType(req, res) {
 // POST /api/event-types
 async function createEventType(req, res) {
   try {
-    const user = await getOne('SELECT id FROM users WHERE username = $1', ['john']);
+    const user = await getOne('SELECT id FROM users WHERE username = $1', ['user_name']);
     const { title, slug, description, duration, color, location, buffer_before, buffer_after, questions, requires_confirmation } = req.body;
 
     if (!title || !slug || !duration) {
