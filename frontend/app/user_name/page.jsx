@@ -10,7 +10,8 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
-    fetch(`${apiBase}/event-types`)
+    const cleanBase = apiBase.endsWith('/') ? apiBase.slice(0, -1) : apiBase;
+    fetch(`${cleanBase}/event-types`)
       .then(r => r.json())
       .then(data => {
         if (data.success) {

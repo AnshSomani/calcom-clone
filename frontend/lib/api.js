@@ -2,7 +2,12 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
 
 async function apiRequest(endpoint, options = {}) {
   try {
-    const res = await fetch(`${API_BASE}${endpoint}`, {
+    // Sanitize base URL and endpoint to prevent double-slashes or missing slashes
+    const cleanBase = API_BASE.endsWith('/') ? API_BASE.slice(0, -1) : API_BASE;
+    const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    const url = `${cleanBase}${cleanEndpoint}`;
+
+    const res = await fetch(url, {
       headers: { 'Content-Type': 'application/json', ...options.headers },
       ...options,
     });

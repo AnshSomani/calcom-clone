@@ -4,9 +4,18 @@ const path = require('path');
 
 const SCHEMA_PATH = path.join(__dirname, 'schema.sql');
 
+const useSSL = process.env.DATABASE_URL && (
+  process.env.DATABASE_URL.includes('neon.tech') ||
+  process.env.DATABASE_URL.includes('sslmode=') ||
+  process.env.PG_SSL === 'true'
+);
+
 const pool = new Pool(
   process.env.DATABASE_URL
-    ? { connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } }
+    ? { 
+        connectionString: process.env.DATABASE_URL, 
+        ssl: useSSL ? { rejectUnauthorized: false } : false 
+      }
     : {
         host: process.env.PG_HOST || 'localhost',
         port: parseInt(process.env.PG_PORT || '5432'),
