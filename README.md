@@ -160,8 +160,8 @@ The client interface runs at **http://localhost:3000**.
 | `http://localhost:3000/event-types` | Host: Admin Event Types |
 | `http://localhost:3000/availability` | Host: Weekly Schedules & Overrides |
 | `http://localhost:3000/bookings` | Host: Bookings Dashboard (Upcoming / Past / Cancelled) |
-| `http://localhost:3000/john` | Public: Landing Profile for Host John |
-| `http://localhost:3000/john/30min` | Public: 30-Minute Consultation Booking Calendar |
+| `http://localhost:3000/user_name` | Public: Landing Profile for Host John |
+| `http://localhost:3000/user_name/30min` | Public: 30-Minute Consultation Booking Calendar |
 | `http://localhost:3001/api/health` | Backend: API Health Check |
 
 ---
